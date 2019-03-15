@@ -6,4 +6,5 @@ repon ja tutkin tiedostojen lukua tavuiksi ja tavujen käsittelyä
 javalla. 
 
 ### Perjantai 15.3
-Aloitin dokumentaation kirjoittamisen ensimmäistä palautusta varten.  
+Aloitin dokumentaation kirjoittamisen ensimmäistä palautusta varten. Luin lisää aiheesta dokumentaatiota varten. 
+Tunkkasin checkstylen projektiin.
