@@ -1,6 +1,6 @@
 package compress.domain;
 
-public class Tuple implements Comparable<Tuple>{
+public class Tuple implements Comparable<Tuple> {
     private byte id;
     private long count;
 
@@ -19,12 +19,12 @@ public class Tuple implements Comparable<Tuple>{
 
     @Override
     public String toString() {
-        return "byte:" + id + ", count: " + count;
+        return "byte:" + Byte.toString(id) + ", count: " + count;
     }
 
-
+    //ascending order
     @Override
     public int compareTo(Tuple tuple) {
-        return (int)(this.count - tuple.count);
+        return Long.compare(tuple.count, this.count);
     }
 }
