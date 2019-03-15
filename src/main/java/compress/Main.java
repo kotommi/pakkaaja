@@ -29,5 +29,9 @@ public class Main {
                 System.out.println("index:" + i);
             }
         }
+        String s = Integer.toBinaryString(5);
+        System.out.println(s);
     }
+
+    public static in
 }
