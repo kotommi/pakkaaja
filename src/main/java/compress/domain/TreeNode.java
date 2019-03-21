@@ -31,6 +31,25 @@ public class TreeNode implements Comparable<TreeNode> {
         this.right = right;
     }
 
+    public int getDepth() {
+        if (this.isLeaf()) {
+            return 1;
+        }
+        return 1 + this.right.getDepth();
+    }
+
+    public TreeNode getLeft() {
+        return this.left;
+    }
+
+    public TreeNode getRight() {
+        return this.right;
+    }
+
+    public boolean isLeaf() {
+        return left == null && right == null;
+    }
+
     @Override
     public String toString() {
         String s = "bytes:" + Arrays.toString(id) + ", c: " + count;
@@ -43,7 +62,6 @@ public class TreeNode implements Comparable<TreeNode> {
         return s;
     }
 
-    //ascending order
     @Override
     public int compareTo(TreeNode treeNode) {
         return Long.compare(this.count, treeNode.count);

@@ -24,7 +24,9 @@ public class Main {
         long[] freqs = getFreqs(fileBytes);
         TreeNode[] treeNodes = buildNodes(freqs);
         TreeNode treeRoot = buildTree(treeNodes);
-        System.out.println(treeRoot);
+        //System.out.println(treeRoot);
+        System.out.println("tree depth: " + treeRoot.getDepth());
+        Huffman
     }
 
 }
