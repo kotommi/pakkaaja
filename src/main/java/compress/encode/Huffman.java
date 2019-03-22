@@ -5,6 +5,7 @@ import compress.domain.TreeNode;
 import compress.utils.ArrayUtils;
 
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.PriorityQueue;
 
 public class Huffman {
@@ -41,7 +42,7 @@ public class Huffman {
 
         for (int i = 0; i < freqs.length; i++) {
             if (freqs[i] != 0) {
-                treeNodes[j] = new TreeNode(freqs[i], (byte) i);
+                treeNodes[j] = new TreeNode(freqs[i], (byte) (i + 128));
                 j++;
             }
         }
@@ -106,4 +107,27 @@ public class Huffman {
         inOrderTreeWalk(treeRoot, new Codeword(), table);
         return table;
     }
+
+
+    /**
+     * FIXME/TODO
+     *
+     * @param bytesToWrite
+     * @param lookup
+     * @return
+     */
+    public static byte[] encode(byte[] bytesToWrite, Codeword[] lookup) {
+        BitSet bits = new BitSet();
+        final int offset = 128;
+        int index = 0;
+        for (byte b : bytesToWrite) {
+            Codeword cw = lookup[b + offset];
+            for (int i = 0; i < cw.getIndex(); i++) {
+                bits.set(index, cw.getBits().get(i));
+                index++;
+            }
+        }
+        return bits.toByteArray();
+    }
+
 }

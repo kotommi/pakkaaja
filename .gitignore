@@ -5,4 +5,6 @@ build/
 *.txt
 *.png
 *.iml
+*.mp4
+*.huf
 out/

@@ -25,4 +25,14 @@ public class FileUtils {
         System.out.println("reading file: " + filepath);
         return Files.toByteArray(new File(filepath));
     }
+
+    public static void writeFile(String filename, byte[] encodedBytes) {
+        final String userDir = System.getProperty("user.dir");
+        final String filepath = userDir + "/" + filename + ".huf";
+        try {
+            Files.write(encodedBytes, new File(filepath));
+        } catch (IOException e) {
+            System.out.println("Something went wrong writing file");
+        }
+    }
 }
