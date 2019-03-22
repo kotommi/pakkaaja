@@ -13,6 +13,7 @@ public class Huffman {
 
     public static TreeNode buildTree(TreeNode[] nodes) {
         PriorityQueue<TreeNode> heap = new PriorityQueue<>(Arrays.asList(nodes));
+        System.out.println("heap: " + heap);
         while (heap.size() > 1) {
             TreeNode left = heap.poll();
             TreeNode right = heap.poll();
@@ -43,20 +44,19 @@ public class Huffman {
             left = right;
             right = temp;
         }
-        byte[] newBytes = ArrayUtils.concat(left.getId(), right.getId());
-        TreeNode combined = new TreeNode((left.getCount() + right.getCount()), newBytes);
+        TreeNode combined = new TreeNode((left.getCount() + right.getCount()), new byte[0]);
         combined.setLeft(left);
         combined.setRight(right);
         return combined;
     }
 
     public static void inOrderTreeWalk(TreeNode node, Codeword bits, Codeword[] table) {
-        System.out.println("walking: " + bits);
         if (node == null) {
             return;
         }
         if (node.isLeaf()) {
             //taulukko[node.getBytes[0] =
+            bits.reverse();
             table[(int) node.getId()[0] + 128] = bits;
             return;
         }

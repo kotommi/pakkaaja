@@ -2,6 +2,9 @@ package compress.domain;
 
 import java.util.BitSet;
 
+/**
+ * Highly kesken.
+ */
 public class Codeword {
 
     private BitSet bits;
@@ -23,6 +26,10 @@ public class Codeword {
         index++;
     }
 
+    public BitSet getBits() {
+        return this.bits;
+    }
+
     public void setNext(boolean b) {
         bits.set(index, b);
         index++;
@@ -32,6 +39,14 @@ public class Codeword {
         return index;
     }
 
+    public void reverse() {
+        BitSet rev = new BitSet();
+        for (int i = index; i >= 0; i--) {
+            rev.set(i, bits.get(index - i));
+        }
+        this.bits = rev;
+    }
+
     @Override
     public Codeword clone() {
         return new Codeword((BitSet) this.bits.clone(), this.index);
@@ -39,11 +54,11 @@ public class Codeword {
 
     @Override
     public String toString() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int i = index - 1; i >= 0; i--) {
-            s += bits.get(i) ? "1" : "0";
+            s.append(bits.get(i) ? "1" : "0");
         }
-        return s + bits.toString();
+        return s.toString();
     }
 
 }

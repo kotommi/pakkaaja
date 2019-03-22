@@ -35,7 +35,7 @@ public class TreeNode implements Comparable<TreeNode> {
         if (this.isLeaf()) {
             return 0;
         }
-        return 1 + this.right.getDepth();
+        return 1 + Math.max(this.left.getDepth(), this.right.getDepth());
     }
 
     public TreeNode getLeft() {
@@ -52,7 +52,7 @@ public class TreeNode implements Comparable<TreeNode> {
 
     @Override
     public String toString() {
-        String s = "bytes:" + Arrays.toString(id) + ", c: " + count;
+        String s = "byte:" + Arrays.toString(id) + ", c: " + count;
         if (left != null) {
             s = s + "\n" + left.toString();
         }
