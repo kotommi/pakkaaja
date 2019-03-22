@@ -2,11 +2,11 @@ package compress.encode;
 
 import static compress.utils.ArrayUtils.nonZeroes;
 
+import compress.domain.Codeword;
 import compress.domain.TreeNode;
 import compress.utils.ArrayUtils;
 
 import java.util.Arrays;
-import java.util.BitSet;
 import java.util.PriorityQueue;
 
 public class Huffman {
@@ -50,16 +50,28 @@ public class Huffman {
         return combined;
     }
 
-    public static void inOrderTreeWalk(TreeNode node, BitSet bits, BitSet[] table) {
+    public static void inOrderTreeWalk(TreeNode node, Codeword bits, Codeword[] table) {
+        System.out.println("walking: " + bits);
         if (node == null) {
             return;
         }
         if (node.isLeaf()) {
             //taulukko[node.getBytes[0] =
-            table[node.getId()[0]] = bits;
+            table[(int) node.getId()[0] + 128] = bits;
+            return;
         }
-        int len = bits.length();
-        BitSet left = (BitSet) bits.clone();
-        left.set(len + 1, false);
+        // could probably reuse original bits for one of these
+        Codeword left = bits.clone();
+        left.setNext(false);
+        Codeword right = bits.clone();
+        right.setNext(true);
+        inOrderTreeWalk(node.getLeft(), left, table);
+        inOrderTreeWalk(node.getRight(), right, table);
+    }
+
+    public static Codeword[] buildLookupTable(TreeNode treeRoot) {
+        Codeword[] table = new Codeword[256];
+        inOrderTreeWalk(treeRoot, new Codeword(), table);
+        return table;
     }
 }

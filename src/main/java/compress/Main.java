@@ -5,9 +5,12 @@ import static compress.encode.Huffman.buildTree;
 import static compress.utils.ArrayUtils.getFreqs;
 import static compress.utils.FileUtils.readFile;
 
+import compress.domain.Codeword;
 import compress.domain.TreeNode;
+import compress.encode.Huffman;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class Main {
@@ -26,7 +29,8 @@ public class Main {
         TreeNode treeRoot = buildTree(treeNodes);
         //System.out.println(treeRoot);
         System.out.println("tree depth: " + treeRoot.getDepth());
-        Huffman
+        Codeword[] lookupTable = Huffman.buildLookupTable(treeRoot);
+        System.out.println(Arrays.toString(lookupTable));
     }
 
 }

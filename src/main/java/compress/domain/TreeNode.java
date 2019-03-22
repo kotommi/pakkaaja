@@ -33,7 +33,7 @@ public class TreeNode implements Comparable<TreeNode> {
 
     public int getDepth() {
         if (this.isLeaf()) {
-            return 1;
+            return 0;
         }
         return 1 + this.right.getDepth();
     }
