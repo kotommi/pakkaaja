@@ -1,13 +1,10 @@
 package compress;
 
-import static compress.encode.Huffman.buildNodes;
-import static compress.encode.Huffman.buildTree;
-import static compress.utils.ArrayUtils.getFreqs;
-import static compress.utils.FileUtils.readFile;
-
 import compress.domain.Codeword;
 import compress.domain.TreeNode;
 import compress.encode.Huffman;
+import compress.utils.ArrayUtils;
+import compress.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -23,20 +20,24 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         final String filename = args[0];
-        final byte[] fileBytes = readFile(filename);
-        long[] freqs = getFreqs(fileBytes);
-        TreeNode[] treeNodes = buildNodes(freqs);
-        TreeNode treeRoot = buildTree(treeNodes);
+        final byte[] fileBytes = FileUtils.readFile(filename);
+        final long[] freqs = ArrayUtils.getFreqs(fileBytes);
+        final TreeNode[] treeNodes = Huffman.buildNodes(freqs);
+        final TreeNode treeRoot = Huffman.buildTree(treeNodes);
         System.out.println("tree: " + treeRoot);
         System.out.println("tree depth: " + treeRoot.getDepth());
-        Codeword[] lookupTable = Huffman.buildLookupTable(treeRoot);
+        final Codeword[] lookupTable = Huffman.buildLookupTable(treeRoot);
         System.out.println(Arrays.toString(lookupTable));
         for (int i = 0; i < lookupTable.length; i++) {
             if (lookupTable[i] == null) {
                 continue;
             }
-            byte b = (byte) (i + 128);
-            System.out.println("Byte: " + b + " char: " + Character.getName((char) (b + 128)) + " string: " + lookupTable[i].toString());
+            final int offset = 128;
+            final byte b = (byte) (i + offset);
+            System.out.println("Byte: " + b + " char: "
+                    + Character.getName((char) (b + offset))
+                    + " string: "
+                    + lookupTable[i].toString());
         }
 
     }

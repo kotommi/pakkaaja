@@ -1,7 +1,8 @@
 package compress.utils;
 
 public class ArrayUtils {
-    private final static int BYTE_VALUES = 256;
+    private static final int BYTE_VALUES = 256;
+    private static final int OFFSET = 128;
 
     /**
      * Counts the frequency of each byte value 0-255.
@@ -11,9 +12,9 @@ public class ArrayUtils {
      */
     public static long[] getFreqs(byte[] arr) {
 
-        long[] freqs = new long[BYTE_VALUES];
+        final long[] freqs = new long[BYTE_VALUES];
         for (byte b : arr) {
-            int i = (int) b + 128;
+            int i = (int) b + OFFSET;
             freqs[i]++;
         }
         return freqs;

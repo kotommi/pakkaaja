@@ -8,6 +8,8 @@
     <!-- can't split long messages between lines -->
     <suppress checks="RegexpSingleline" files="google_checks\.xml" lines="37,78"/>
 
+    <suppress files=".*Test.java" checks="[a-zA-Z0-9]*"/>
+
     <suppress checks="FileLength"
               files="TokenTypes.java|IndentationCheckTest.java"
               lines="1"/>

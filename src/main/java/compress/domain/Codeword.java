@@ -3,7 +3,7 @@ package compress.domain;
 import java.util.BitSet;
 
 /**
- * Highly kesken.
+ * Highly kesken. Wrapperi BitSetille.
  */
 public class Codeword {
 
@@ -21,11 +21,6 @@ public class Codeword {
         this.index = index;
     }
 
-    public void setBit(int i, boolean b) {
-        bits.set(i, b);
-        index++;
-    }
-
     public BitSet getBits() {
         return this.bits;
     }
@@ -41,14 +36,13 @@ public class Codeword {
 
     public void reverse() {
         BitSet rev = new BitSet();
-        for (int i = index; i >= 0; i--) {
-            rev.set(i, bits.get(index - i));
+        for (int i = index - 1; i >= 0; i--) {
+            rev.set((index - 1) - i, bits.get(i));
         }
         this.bits = rev;
     }
 
-    @Override
-    public Codeword clone() {
+    public Codeword getCopy() {
         return new Codeword((BitSet) this.bits.clone(), this.index);
     }
 
@@ -61,4 +55,16 @@ public class Codeword {
         return s.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Codeword codeword = (Codeword) o;
+        return index == codeword.index
+                && bits.equals(codeword.bits);
+    }
 }

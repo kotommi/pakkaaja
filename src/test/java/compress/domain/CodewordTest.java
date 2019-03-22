@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.BitSet;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CodewordTest {
@@ -18,7 +19,31 @@ public class CodewordTest {
 
     @Test
     public void initialValuesAreSane() {
-        assertTrue(cw.getIndex() == 0);
-        assertTrue(cw.getBits().equals(new BitSet()));
+        assertEquals(0, cw.getIndex());
+        assertEquals(cw.getBits(), new BitSet());
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals("", cw.toString());
+        cw.setNext(false);
+        assertEquals("0", cw.toString());
+        cw.setNext(true);
+        assertEquals("10", cw.toString());
+        cw.setNext(true);
+        assertEquals("110", cw.toString());
+    }
+
+    @Test
+    public void reverseTest() {
+        cw.setNext(false);
+        cw.setNext(true);
+        assertEquals("10", cw.toString());
+        cw.reverse();
+        assertEquals("01", cw.toString());
+        cw.setNext(true);
+        assertEquals("101", cw.toString());
+        cw.reverse();
+        assertEquals("101", cw.toString());
     }
 }

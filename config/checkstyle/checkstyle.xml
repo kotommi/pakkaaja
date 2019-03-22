@@ -17,7 +17,7 @@
               value="In our config we should use all Checks that Checkstyle has"/>
 
 
-    <property name="severity" value="error"/>
+    <property name="severity" value="warning"/>
 
     <property name="fileExtensions" value="java, properties, xml, vm, g, g4, dtd"/>
 
@@ -56,18 +56,6 @@
     <module name="UniqueProperties"/>
 
     <!-- Regexp -->
-    <module name="RegexpMultiline"/>
-    <module name="RegexpMultiline">
-        <property name="format" value="\r?\n[\t ]*\r?\n[\t ]*\r?\n"/>
-        <property name="fileExtensions" value="java,xml,properties"/>
-        <property name="message" value="Unnecessary consecutive lines"/>
-    </module>
-    <module name="RegexpMultiline">
-        <property name="format" value="/\*\*\W+\* +\p{javaLowerCase}"/>
-        <property name="fileExtensions" value="java"/>
-        <property name="message"
-                  value="First sentence in a comment should start with a capital letter"/>
-    </module>
     <module name="RegexpSingleline">
         <property name="format" value="\s+$"/>
         <property name="minimum" value="0"/>
@@ -194,12 +182,7 @@
         </module>
 
         <!-- Class Design -->
-        <module name="DesignForExtension">
-            <property name="ignoredAnnotations"
-                      value="Override, Test, Before, After, BeforeClass, AfterClass"/>
-        </module>
         <module name="FinalClass"/>
-        <module name="HideUtilityClassConstructor"/>
         <module name="InnerTypeLast"/>
         <module name="InterfaceIsType"/>
         <module name="MutableException"/>
@@ -358,21 +341,7 @@
         <!-- Imports -->
         <module name="AvoidStarImport"/>
         <module name="AvoidStaticImport"/>
-        <module name="CustomImportOrder">
-            <property name="customImportOrderRules"
-                      value="STATIC###STANDARD_JAVA_PACKAGE###SPECIAL_IMPORTS"/>
-            <property name="specialImportsRegExp" value="^org\."/>
-            <property name="sortImportsInGroupAlphabetically" value="true"/>
-            <property name="separateLineBetweenGroups" value="true"/>
-        </module>
         <module name="IllegalImport"/>
-        <module name="ImportOrder">
-            <property name="groups" value="/^java\./,javax,org"/>
-            <property name="ordered" value="true"/>
-            <property name="separated" value="true"/>
-            <property name="option" value="top"/>
-            <property name="sortStaticImportsAlphabetically" value="true"/>
-        </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
@@ -497,10 +466,6 @@
         <module name="ConstantName"/>
         <module name="InterfaceTypeParameterName"/>
         <module name="LocalFinalVariableName"/>
-        <module name="LocalVariableName">
-            <property name="format" value="^(id)|([a-z][a-z0-9][a-zA-Z0-9]+)$"/>
-            <property name="allowOneCharVarInForLoop" value="true"/>
-        </module>
         <module name="MemberName">
             <property name="format" value="^(id)|([a-z][a-z0-9][a-zA-Z0-9]+)$"/>
         </module>
