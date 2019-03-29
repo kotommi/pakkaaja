@@ -109,59 +109,49 @@ public class Huffman {
     }
 
 
+    /**
+     * Decodes an array of bytes with a Huffman-tree
+     * into the originals. Expects bytes[0] to be in
+     * range 0-7 and to indicate the leftover bits in
+     * last byte.
+     *
+     * @param bytes    Huffman-encoded bytes
+     * @param treeRoot Huffmantree with codewords used for encoding
+     * @return Original file contents as array of bytes
+     */
     public static byte[] decode(byte[] bytes, TreeNode treeRoot) {
-        byte[] decoded = new byte[bytes.length * 4];
-        int index = 0;
-        BitSet enc = BitSet.valueOf(bytes);
-        TreeNode current = treeRoot;
-        for (int i = 0; i < enc.length(); i++) {
-            if (current.isLeaf()) {
-                decoded[index] = current.getId()[0];
-                index++;
-                current = treeRoot;
-                continue;
-            }
-            boolean b = enc.get(i);
-            if (b) {
-                current = current.getRight();
-            } else {
-                current = current.getLeft();
-            }
-        }
-        return decoded;
-    }
-
-    public static byte[] decode1(byte[] bytes, TreeNode treeRoot) {
         int length = treeRoot.getTotalCount();
-        byte[] decoded = new byte[length + 2];
-        System.out.println("dec len " + length);
+        byte[] decoded = new byte[length];
+
         int index = 0; // where to write in decoded array
         TreeNode current = treeRoot;
         // start from bytes[1], end at second to last
         for (int i = 1; i < bytes.length - 1; i++) {
-            byte b = bytes[i];
+            int currentByte = bytes[i] + offset;
             // j = bit in byte
             // read backwards
-            for (int j = 7; j >= 8; j--) {
+            for (int j = 7; j >= 0; j--) {
                 //shift right j times to get position
                 //and last bit with 1 to get real bit
-                int bit = (b >> j) & 1;
-                System.out.println("j " + j + "bin: " + Integer.toBinaryString(b) + "bit" + bit);
+                int bit = (currentByte >> j) & 1;
+                //System.out.println("j " + j + "bin: " + Integer.toBinaryString(b) + "bit" + bit);
                 // if 0 zero left else right
-                current = bit == 0 ? current.getLeft() : current.getRight();
+                current = (bit == 0) ? current.getLeft() : current.getRight();
                 if (current.isLeaf()) {
                     // write to array and reset the node we're on
                     decoded[index] = current.getId()[0];
+                    System.out.println("wrote: " + current.toString());
                     index++;
                     current = treeRoot;
                 }
             }
         }
         // handle the last byte
-        byte b = bytes[bytes.length - 1];
+        int last = bytes[bytes.length - 1] + offset;
         int used = bytes[0];
-        for (int j = 0; j <= used; j++) {
-            int bit = (b >> j) & 1;
+        for (int j = used; j > 0; j--) {
+            int bit = (last >> j) & 1;
+            //System.out.println("j " + j + "bin: " + Integer.toBinaryString(b) + "bit" + bit);
             current = bit == 0 ? current.getLeft() : current.getRight();
             if (current.isLeaf()) {
                 decoded[index] = current.getId()[0];
@@ -169,14 +159,12 @@ public class Huffman {
                 current = treeRoot;
             }
         }
-
-
         return decoded;
     }
 
     public static byte[] encode(byte[] bytes, Codeword[] lookup) {
-        ArrayList<Byte> lista = new ArrayList<>();
-        lista.add(Byte.MAX_VALUE);
+        ArrayList<Byte> encodedBytes = new ArrayList<>();
+        encodedBytes.add((byte) 0);//placeholder
 
         int bitIndex = 0;
         int currentByte = 0;
@@ -198,9 +186,9 @@ public class Huffman {
                     bitIndex++;
                 } else {
                     // byte "full"
-                    // TODO make better
+                    // TODO simplify the conversion
                     // get the last 8 bits out of n int
-                    lista.add((byte) ((currentByte + offset) & 0b11111111));
+                    encodedBytes.add((byte) ((currentByte + offset) & 0b11111111));
                     currentByte = 0;
                     bitIndex = 0;
                     // do this byte again
@@ -209,12 +197,12 @@ public class Huffman {
             }
         }
         //add the last byte
-        lista.add((byte) ((currentByte + offset) & 0b11111111));
-        //set the header byte to use bits in the last byte
-        lista.set(0, (byte) bitIndex);
+        encodedBytes.add((byte) ((currentByte + offset) & 0b11111111));
+        //set the header byte to used bits in the last byte
+        encodedBytes.set(0, (byte) bitIndex);
 
         //spaghetti
-        Object[] objects = lista.toArray();
+        Object[] objects = encodedBytes.toArray();
         byte[] encoded = new byte[objects.length];
         for (int i = 0; i < objects.length; i++) {
             encoded[i] = ((Byte) objects[i]);

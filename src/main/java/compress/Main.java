@@ -37,7 +37,7 @@ public class Main {
         FileUtils.writeFile(filename, encodedBytes);
         byte[] asdasd = FileUtils.readFile(filename + ".huf");
         System.out.println("encoded: " + Arrays.toString(asdasd));
-        byte[] decodedBytes = Huffman.decode1(asdasd, treeRoot);
+        byte[] decodedBytes = Huffman.decode(asdasd, treeRoot);
         System.out.println("decoded: " + Arrays.toString(decodedBytes));
         FileUtils.writeFile("decoded.file", decodedBytes);
     }
