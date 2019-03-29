@@ -11,7 +11,7 @@ Kirjoitin lisäksi testit Huffman-luokalle, mutta niitä voisi laajentaa reunata
 Tällä hetkellä tiedoston voi pakata ja purkaa muistissa olevan Huffman-puun avulla.
 Satunnaiselle suomenkieliselle kirjalle pakattu tiedosto on noin 60% alkuperäisestä, josta puuttu headeri joka sisältää puun. 
 Seuraavaksi pitäisi koodata puu tiedoston mukaan, että ohjelmalla tekee oikeasti jotain. 
-Oheessa Vänrikki Stoolin tarinat pakattuna: 
+Oheessa Vänrikki Stoolin tarinat pakattuna ja purettuna: 
 
 ```
 $ diff tarinat.txt decoded.file.huf -s
