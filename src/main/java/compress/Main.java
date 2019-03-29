@@ -21,6 +21,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         final String filename = args[0];
         final byte[] fileBytes = FileUtils.readFile(filename);
+        final int fileBytesCount = fileBytes.length;
         //System.out.println("eka" + fileBytes[0]);
         System.out.println("original: " + Arrays.toString(fileBytes));
         final long[] freqs = ArrayUtils.getFreqs(fileBytes);
@@ -36,7 +37,7 @@ public class Main {
         FileUtils.writeFile(filename, encodedBytes);
         byte[] asdasd = FileUtils.readFile(filename + ".huf");
         System.out.println("encoded: " + Arrays.toString(asdasd));
-        byte[] decodedBytes = Huffman.decode(asdasd, treeRoot);
+        byte[] decodedBytes = Huffman.decode1(asdasd, treeRoot);
         System.out.println("decoded: " + Arrays.toString(decodedBytes));
         FileUtils.writeFile("decoded.file", decodedBytes);
     }

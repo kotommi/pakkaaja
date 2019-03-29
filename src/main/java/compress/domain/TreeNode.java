@@ -38,6 +38,13 @@ public class TreeNode implements Comparable<TreeNode> {
         return 1 + Math.max(this.left.getDepth(), this.right.getDepth());
     }
 
+    public int getTotalCount() {
+        if (this.isLeaf()) {
+            return (int) this.count;
+        }
+        return this.left.getTotalCount() + this.right.getTotalCount();
+    }
+
     public TreeNode getLeft() {
         return this.left;
     }

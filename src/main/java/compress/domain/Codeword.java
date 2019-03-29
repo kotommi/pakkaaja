@@ -55,6 +55,7 @@ public class Codeword {
         return s.toString();
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
