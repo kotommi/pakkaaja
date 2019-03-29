@@ -1,5 +1,7 @@
 package compress.utils;
 
+import java.util.Arrays;
+
 public class ArrayUtils {
     private static final int BYTE_VALUES = 256;
     private static final int OFFSET = 128;

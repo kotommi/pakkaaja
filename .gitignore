@@ -7,4 +7,5 @@ build/
 *.iml
 *.mp4
 *.huf
+*.pdf
 out/

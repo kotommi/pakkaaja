@@ -18,7 +18,6 @@ public class Huffman {
      */
     public static TreeNode buildTree(TreeNode[] nodes) {
         PriorityQueue<TreeNode> heap = new PriorityQueue<>(Arrays.asList(nodes));
-        System.out.println("heap: " + heap);
         while (heap.size() > 1) {
             TreeNode left = heap.poll();
             TreeNode right = heap.poll();
@@ -36,7 +35,6 @@ public class Huffman {
      */
     public static TreeNode[] buildNodes(long[] freqs) {
         final int size = ArrayUtils.nonZeroes(freqs);
-        System.out.println(size + "/256 bytes used");
         final TreeNode[] treeNodes = new TreeNode[size];
         int j = 0;
 
@@ -75,7 +73,7 @@ public class Huffman {
      * @param bits  Codeword representing the shortform version for a particular byte
      * @param table lookup-table for Huffman codes
      */
-    private static void inOrderTreeWalk(TreeNode node, Codeword bits, Codeword[] table) {
+    private static void preOrderTreeWalk(TreeNode node, Codeword bits, Codeword[] table) {
         if (node == null) {
             return;
         }
@@ -90,8 +88,8 @@ public class Huffman {
         left.setNext(false);
         final Codeword right = bits.getCopy();
         right.setNext(true);
-        inOrderTreeWalk(node.getLeft(), left, table);
-        inOrderTreeWalk(node.getRight(), right, table);
+        preOrderTreeWalk(node.getLeft(), left, table);
+        preOrderTreeWalk(node.getRight(), right, table);
     }
 
 
@@ -104,7 +102,7 @@ public class Huffman {
     public static Codeword[] buildLookupTable(TreeNode treeRoot) {
         final int BYTEMAX = 256;
         Codeword[] table = new Codeword[BYTEMAX];
-        inOrderTreeWalk(treeRoot, new Codeword(), table);
+        preOrderTreeWalk(treeRoot, new Codeword(), table);
         return table;
     }
 
@@ -128,6 +126,28 @@ public class Huffman {
             }
         }
         return bits.toByteArray();
+    }
+
+    public static byte[] decode(byte[] bytes, TreeNode treeRoot) {
+        byte[] decoded = new byte[bytes.length * 4];
+        int index = 0;
+        BitSet enc = BitSet.valueOf(bytes);
+        TreeNode current = treeRoot;
+        for (int i = 0; i < enc.length(); i++) {
+            if (current.isLeaf()) {
+                decoded[index] = current.getId()[0];
+                index++;
+                current = treeRoot;
+                continue;
+            }
+            boolean b = enc.get(i);
+            if (b) {
+                current = current.getRight();
+            } else {
+                current = current.getLeft();
+            }
+        }
+        return decoded;
     }
 
 }
