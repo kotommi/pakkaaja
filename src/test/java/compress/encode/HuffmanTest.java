@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class HuffmanTest {
 
-    // String used: cbbaaa
+    // String used
     byte[] stringBytes = {C, B, B, A, A, A};
 
     final static byte A = 97;

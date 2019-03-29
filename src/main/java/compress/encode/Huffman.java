@@ -134,13 +134,11 @@ public class Huffman {
                 //shift right j times to get position
                 //and last bit with 1 to get real bit
                 int bit = (currentByte >> j) & 1;
-                //System.out.println("j " + j + "bin: " + Integer.toBinaryString(b) + "bit" + bit);
                 // if 0 zero left else right
                 current = (bit == 0) ? current.getLeft() : current.getRight();
                 if (current.isLeaf()) {
                     // write to array and reset the node we're on
                     decoded[index] = current.getId()[0];
-                    System.out.println("wrote: " + current.toString());
                     index++;
                     current = treeRoot;
                 }
@@ -151,7 +149,6 @@ public class Huffman {
         int used = bytes[0];
         for (int j = used; j > 0; j--) {
             int bit = (last >> j) & 1;
-            //System.out.println("j " + j + "bin: " + Integer.toBinaryString(b) + "bit" + bit);
             current = bit == 0 ? current.getLeft() : current.getRight();
             if (current.isLeaf()) {
                 decoded[index] = current.getId()[0];
@@ -197,7 +194,7 @@ public class Huffman {
             }
         }
         //add the last byte
-        encodedBytes.add((byte) ((currentByte + offset) & 0b11111111));
+        encodedBytes.add((byte) ((currentByte + offset) & 0b11111111));// TODO simplify the conversion
         //set the header byte to used bits in the last byte
         encodedBytes.set(0, (byte) bitIndex);
 

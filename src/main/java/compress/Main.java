@@ -23,37 +23,18 @@ public class Main {
         final byte[] fileBytes = FileUtils.readFile(filename);
         final int fileBytesCount = fileBytes.length;
         //System.out.println("eka" + fileBytes[0]);
-        System.out.println("original: " + Arrays.toString(fileBytes));
+        //System.out.println("original: " + Arrays.toString(fileBytes));
         final long[] freqs = ArrayUtils.getFreqs(fileBytes);
         final TreeNode[] treeNodes = Huffman.buildNodes(freqs);
         final TreeNode treeRoot = Huffman.buildTree(treeNodes);
-        //System.out.println("tree: " + treeRoot);
-        //System.out.println("tree depth: " + treeRoot.getDepth());
         final Codeword[] lookupTable = Huffman.buildLookupTable(treeRoot);
-        //System.out.println(Arrays.toString(lookupTable));
-        //printLookupTable(lookupTable);
         final byte[] encodedBytes = Huffman.encode(fileBytes, lookupTable);
-        System.out.println(Arrays.toString(encodedBytes));
         FileUtils.writeFile(filename, encodedBytes);
         byte[] asdasd = FileUtils.readFile(filename + ".huf");
-        System.out.println("encoded: " + Arrays.toString(asdasd));
+        //System.out.println("encoded: " + Arrays.toString(asdasd));
         byte[] decodedBytes = Huffman.decode(asdasd, treeRoot);
-        System.out.println("decoded: " + Arrays.toString(decodedBytes));
+        //System.out.println("decoded: " + Arrays.toString(decodedBytes));
         FileUtils.writeFile("decoded.file", decodedBytes);
-    }
-
-    public static void printLookupTable(Codeword[] lookupTable) {
-        for (int i = 0; i < lookupTable.length; i++) {
-            if (lookupTable[i] == null) {
-                continue;
-            }
-            final int offset = 128;
-            final byte b = (byte) (i + offset);
-            System.out.println("Byte: " + b + " char: "
-                    + Character.getName((char) (b + offset))
-                    + " string: "
-                    + lookupTable[i].toString());
-        }
     }
 
 }
