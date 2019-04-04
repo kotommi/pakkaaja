@@ -6,12 +6,11 @@ import compress.utils.ArrayUtils;
 import compress.utils.ByteList;
 
 import java.util.Arrays;
-import java.util.BitSet;
 import java.util.PriorityQueue;
 
 public class Huffman {
 
-    static final int offset = 128;
+    private static final int offset = 128;
 
     /**
      * Builds a Huffman-tree from orphan nodes.
@@ -183,7 +182,6 @@ public class Huffman {
                     bitIndex++;
                 } else {
                     // byte "full"
-                    // TODO simplify the conversion
                     // get the last 8 bits out of n int
                     encodedBytes.add((byte) ((currentByte + offset)));
                     currentByte = 0;
@@ -194,7 +192,7 @@ public class Huffman {
             }
         }
         //add the last byte
-        encodedBytes.add((byte) ((currentByte + offset)));// TODO simplify the conversion
+        encodedBytes.add((byte) ((currentByte + offset)));
 
         //set the header byte to used bits in the last byte
         encodedBytes.set(0, (byte) bitIndex);
