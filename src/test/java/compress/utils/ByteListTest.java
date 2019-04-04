@@ -23,10 +23,11 @@ public class ByteListTest {
         list = new ByteList(init);
         assertEquals(4, list.size());
         assertArrayEquals(init, list.toArray());
+        list = new ByteList(1);
     }
 
     @Test
-    public void listGrowsProperlyWithInitialArrayTest() {
+    public void listGrowsProperlyWithInitialArray() {
         byte[] init = {0, 0, 0, 0};
         list = new ByteList(init);
         for (int i = 0; i < 100000; i++) {
@@ -34,6 +35,16 @@ public class ByteListTest {
         }
         assertEquals(100000 + init.length, list.size());
         assertEquals(Byte.MAX_VALUE, list.get(100000 + init.length - 1));
+    }
+
+    @Test
+    public void listGrowsProperlyWithInitialArrayLength() {
+        list = new ByteList(10);
+        for (int i = 0; i < 100000; i++) {
+            list.add(Byte.MAX_VALUE);
+        }
+        assertEquals(100000, list.size());
+        assertEquals(Byte.MAX_VALUE, list.get(100000 - 1));
 
     }
 

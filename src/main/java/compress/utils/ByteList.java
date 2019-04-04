@@ -9,6 +9,11 @@ public class ByteList {
         this.size = 0;
     }
 
+    public ByteList(int initLength) {
+        this.bytes = new byte[initLength];
+        this.size = 0;
+    }
+
     public ByteList(byte[] initialBytes) {
         this.bytes = new byte[initialBytes.length];
         for (int i = 0; i < initialBytes.length; i++) {
@@ -41,7 +46,8 @@ public class ByteList {
 
     private void reSize() {
         //resizing factor stolen from arraylist
-        byte[] newBytes = new byte[(int) (bytes.length * 1.5)];
+        int newLength = (int) (bytes.length * 1.5) + 1;
+        byte[] newBytes = new byte[newLength];
         for (int i = 0; i < bytes.length; i++) {
             newBytes[i] = bytes[i];
         }
