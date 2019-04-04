@@ -4,9 +4,7 @@ import compress.domain.Codeword;
 import compress.domain.TreeNode;
 import compress.utils.ArrayUtils;
 import compress.utils.ByteList;
-
-import java.util.Arrays;
-import java.util.PriorityQueue;
+import compress.utils.MinHeap;
 
 public class Huffman {
 
@@ -19,7 +17,9 @@ public class Huffman {
      * @return A Huffman-tree where leaves are sorted by count.
      */
     public static TreeNode buildTree(TreeNode[] nodes) {
-        PriorityQueue<TreeNode> heap = new PriorityQueue<>(Arrays.asList(nodes));
+        MinHeap heap = new MinHeap();
+        heap.addAll(nodes);
+
         while (heap.size() > 1) {
             TreeNode left = heap.poll();
             TreeNode right = heap.poll();
