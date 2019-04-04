@@ -70,7 +70,7 @@ public class Huffman {
     }
 
     /**
-     * Recursive inorder treewalk-method that mutates parameter table.
+     * Recursive preorder-treewalk-method that mutates parameter table.
      *
      * @param node  TreeNode to process
      * @param bits  Codeword representing the shortform version for a particular byte

@@ -13,7 +13,6 @@ public class TreeNodeTest {
         assertEquals(0, node.getDepth());
         assertEquals(5, node.getCount());
         assertTrue(node.isLeaf());
-        assertEquals("byte:0, c: 5", node.toString());
     }
 
     @Test

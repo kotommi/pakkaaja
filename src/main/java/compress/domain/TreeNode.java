@@ -60,7 +60,7 @@ public class TreeNode implements Comparable<TreeNode> {
 
     @Override
     public String toString() {
-        String s = "byte:" + id + ", c: " + count;
+        String s = "count: " + count;
         if (left != null) {
             s = s + "\n" + left.toString();
         }

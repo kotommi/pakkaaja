@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Class for handling files.
  */
-public class FileUtils {
+public final class FileUtils {
 
     /**
      * Reads a file from current working directory as array of bytes.
