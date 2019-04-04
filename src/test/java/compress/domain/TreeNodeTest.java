@@ -9,11 +9,11 @@ public class TreeNodeTest {
 
     @Test
     public void constAndGetTest() {
-        TreeNode node = new TreeNode(5l, (byte) 0);
+        TreeNode node = new TreeNode(5L, (byte) 0);
         assertEquals(0, node.getDepth());
         assertEquals(5, node.getCount());
-        assertEquals(true, node.isLeaf());
-        assertEquals("byte:[0], c: 5", node.toString());
+        assertTrue(node.isLeaf());
+        assertEquals("byte:0, c: 5", node.toString());
     }
 
     @Test

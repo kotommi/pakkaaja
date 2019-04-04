@@ -2,20 +2,21 @@ package compress.domain;
 
 import java.util.Arrays;
 
+
 public class TreeNode implements Comparable<TreeNode> {
-    private byte[] id;
+    private byte id;
     private long count;
     private TreeNode left;
     private TreeNode right;
 
-    public TreeNode(long count, byte... id) {
+    public TreeNode(long count, byte id) {
         this.id = id;
         this.count = count;
         this.left = null;
         this.right = null;
     }
 
-    public byte[] getId() {
+    public byte getId() {
         return id;
     }
 
@@ -59,7 +60,7 @@ public class TreeNode implements Comparable<TreeNode> {
 
     @Override
     public String toString() {
-        String s = "byte:" + Arrays.toString(id) + ", c: " + count;
+        String s = "byte:" + id + ", c: " + count;
         if (left != null) {
             s = s + "\n" + left.toString();
         }

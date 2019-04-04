@@ -1,5 +1,8 @@
 package compress.utils;
 
+/**
+ * Dynamic byte-array for convenience purposes
+ */
 public class ByteList {
     private byte[] bytes;
     private int size;

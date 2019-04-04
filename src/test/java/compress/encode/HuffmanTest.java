@@ -13,15 +13,15 @@ import static org.junit.Assert.assertEquals;
 public class HuffmanTest {
 
     // String used
-    byte[] stringBytes = {C, B, B, A, A, A};
+    private byte[] stringBytes = {C, B, B, A, A, A};
 
-    final static byte A = 97;
-    final static byte B = 98;
-    final static byte C = 99;
+    private final static byte A = 97;
+    private final static byte B = 98;
+    private final static byte C = 99;
 
-    final static int OFF = 128;
+    private final static int OFF = 128;
 
-    final long[] freqs = ArrayUtils.getFreqs(stringBytes);
+    private final long[] freqs = ArrayUtils.getFreqs(stringBytes);
 
 
     @Test
@@ -33,15 +33,15 @@ public class HuffmanTest {
 
         TreeNode tn1 = treeNodes[0];
         assertEquals(1, tn1.getCount());
-        assertEquals(C, tn1.getId()[0]);
+        assertEquals(C, tn1.getId());
 
         TreeNode tn2 = treeNodes[1];
         assertEquals(2, tn2.getCount());
-        assertEquals(B, tn2.getId()[0]);
+        assertEquals(B, tn2.getId());
 
         TreeNode tn3 = treeNodes[2];
         assertEquals(3, tn3.getCount());
-        assertEquals(A, tn3.getId()[0]);
+        assertEquals(A, tn3.getId());
 
     }
 
@@ -56,9 +56,9 @@ public class HuffmanTest {
          */
         final TreeNode treeRoot = Huffman.buildTree(Huffman.buildNodes(freqs));
         assertEquals(false, treeRoot.isLeaf());
-        assertEquals(A, treeRoot.getLeft().getId()[0]);
-        assertEquals(B, treeRoot.getRight().getLeft().getId()[0]);
-        assertEquals(C, treeRoot.getRight().getRight().getId()[0]);
+        assertEquals(A, treeRoot.getLeft().getId());
+        assertEquals(B, treeRoot.getRight().getLeft().getId());
+        assertEquals(C, treeRoot.getRight().getRight().getId());
     }
 
     @Test

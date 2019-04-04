@@ -62,7 +62,8 @@ public class Huffman {
             left = right;
             right = temp;
         }
-        final TreeNode combined = new TreeNode(left.getCount() + right.getCount());
+        // combine counts and use a dummy value
+        final TreeNode combined = new TreeNode(left.getCount() + right.getCount(), Byte.MIN_VALUE);
         combined.setLeft(left);
         combined.setRight(right);
         return combined;
@@ -81,7 +82,7 @@ public class Huffman {
         }
         if (node.isLeaf()) {
             bits.reverse();
-            table[(int) node.getId()[0] + offset] = bits;
+            table[(int) node.getId() + offset] = bits;
             return;
         }
         // could probably reuse original bits for one of these
@@ -137,7 +138,7 @@ public class Huffman {
                 current = (bit == 0) ? current.getLeft() : current.getRight();
                 if (current.isLeaf()) {
                     // write to array and reset the node we're on
-                    decoded[index] = current.getId()[0];
+                    decoded[index] = current.getId();
                     index++;
                     current = treeRoot;
                 }
@@ -150,7 +151,7 @@ public class Huffman {
             int bit = (last >> j) & 1;
             current = bit == 0 ? current.getLeft() : current.getRight();
             if (current.isLeaf()) {
-                decoded[index] = current.getId()[0];
+                decoded[index] = current.getId();
                 index++;
                 current = treeRoot;
             }
