@@ -2,6 +2,15 @@ plugins {
     id 'java'
     id 'application'
     id 'checkstyle'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'compress.Main'
+        )
+    }
 }
 
 checkstyle {
