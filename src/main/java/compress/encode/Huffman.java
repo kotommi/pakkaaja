@@ -3,6 +3,7 @@ package compress.encode;
 import compress.domain.Codeword;
 import compress.domain.TreeNode;
 import compress.utils.ArrayUtils;
+import compress.utils.ByteList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -160,8 +161,8 @@ public class Huffman {
     }
 
     public static byte[] encode(byte[] bytes, Codeword[] lookup) {
-        ArrayList<Byte> encodedBytes = new ArrayList<>();
-        encodedBytes.add((byte) 0);//placeholder
+        ByteList encodedBytes = new ByteList();
+        encodedBytes.add((byte) 0);
 
         int bitIndex = 0;
         int currentByte = 0;
@@ -195,17 +196,12 @@ public class Huffman {
         }
         //add the last byte
         encodedBytes.add((byte) ((currentByte + offset) & 0b11111111));// TODO simplify the conversion
+
         //set the header byte to used bits in the last byte
         encodedBytes.set(0, (byte) bitIndex);
 
-        //spaghetti
-        Object[] objects = encodedBytes.toArray();
-        byte[] encoded = new byte[objects.length];
-        for (int i = 0; i < objects.length; i++) {
-            encoded[i] = ((Byte) objects[i]);
-        }
 
-        return encoded;
+        return encodedBytes.toArray();
     }
 
 }
