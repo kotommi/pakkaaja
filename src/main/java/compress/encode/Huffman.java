@@ -5,7 +5,6 @@ import compress.domain.TreeNode;
 import compress.utils.ArrayUtils;
 import compress.utils.ByteList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.PriorityQueue;
@@ -161,7 +160,7 @@ public class Huffman {
     }
 
     public static byte[] encode(byte[] bytes, Codeword[] lookup) {
-        ByteList encodedBytes = new ByteList();
+        final ByteList encodedBytes = new ByteList();
         encodedBytes.add((byte) 0);
 
         int bitIndex = 0;
@@ -186,7 +185,7 @@ public class Huffman {
                     // byte "full"
                     // TODO simplify the conversion
                     // get the last 8 bits out of n int
-                    encodedBytes.add((byte) ((currentByte + offset) & 0b11111111));
+                    encodedBytes.add((byte) ((currentByte + offset)));
                     currentByte = 0;
                     bitIndex = 0;
                     // do this byte again
@@ -195,7 +194,7 @@ public class Huffman {
             }
         }
         //add the last byte
-        encodedBytes.add((byte) ((currentByte + offset) & 0b11111111));// TODO simplify the conversion
+        encodedBytes.add((byte) ((currentByte + offset)));// TODO simplify the conversion
 
         //set the header byte to used bits in the last byte
         encodedBytes.set(0, (byte) bitIndex);
