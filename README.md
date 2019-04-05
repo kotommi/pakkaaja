@@ -13,3 +13,4 @@ Viikkoraportit:
 *  [Viikko 1](https://github.com/kotommi/pakkaaja/blob/master/docs/viikkoraportit/viikko1.md)
 *  [Viikko 2](https://github.com/kotommi/pakkaaja/blob/master/docs/viikkoraportit/viikko2.md)
 *  [Viikko 3](https://github.com/kotommi/pakkaaja/blob/master/docs/viikkoraportit/viikko3.md)
+*  [Viikko 4](https://github.com/kotommi/pakkaaja/blob/master/docs/viikkoraportit/viikko4.md)
