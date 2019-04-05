@@ -4,6 +4,10 @@ Käyttö:
 ```
 gradle run --args=[filename]
 ```
+Tällä hetkellä outputtaa tiedoston original.file.huf joka on pakattu tiedosto ilman otsaketta(todo) ja tiedoston decoded.file.huf joka on  jvm:n muistissa olevan Huffman-puun avulla purettu. Sen että tiedosto on pysynyt samana pakkaus ja purkukierroksen jälkeen voi tarkistaa loitsulla 
+```
+diff -s original.file decoded.file.huf
+```
 
 ## Dokumentaatio
 [Määrittely](https://github.com/kotommi/pakkaaja/blob/master/docs/M%C3%A4%C3%A4rittely.md)
