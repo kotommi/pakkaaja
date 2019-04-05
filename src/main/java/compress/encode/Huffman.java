@@ -81,7 +81,7 @@ public class Huffman {
             return;
         }
         if (node.isLeaf()) {
-            bits.reverse();
+            //bits.reverse();
             table[(int) node.getId() + offset] = bits;
             return;
         }
@@ -171,7 +171,7 @@ public class Huffman {
             Codeword codeword = lookup[bytes[i] + offset];
             for (int j = codeword.getIndex() - 1; j >= 0; j--) {
                 if (bitIndex < 8) {
-                    boolean isTrue = codeword.getBits().get(j);
+                    boolean isTrue = codeword.get(j);
                     if (isTrue) {
                         // if bit == 1 flip last bit
                         currentByte = currentByte | 0b00000001;

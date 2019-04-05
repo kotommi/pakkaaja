@@ -3,9 +3,9 @@ package compress.domain;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.BitSet;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CodewordTest {
 
@@ -19,30 +19,22 @@ public class CodewordTest {
     @Test
     public void initialValuesAreSane() {
         assertEquals(0, cw.getIndex());
-        assertEquals(cw.getBits(), new BitSet());
     }
 
     @Test
-    public void toStringTest() {
-        assertEquals("", cw.toString());
+    public void setGetTest() {
+        cw.setNext(true);
+        assertTrue(cw.get(0));
         cw.setNext(false);
-        assertEquals("0", cw.toString());
+        assertTrue(cw.get(1));
+        assertFalse(cw.get(0));
+        cw = new Codeword();
+        cw.setNext(false);
+        assertFalse(cw.get(0));
         cw.setNext(true);
-        assertEquals("10", cw.toString());
-        cw.setNext(true);
-        assertEquals("110", cw.toString());
+        assertFalse(cw.get(1));
+        assertTrue(cw.get(0));
     }
 
-    @Test
-    public void reverseTest() {
-        cw.setNext(false);
-        cw.setNext(true);
-        assertEquals("10", cw.toString());
-        cw.reverse();
-        assertEquals("01", cw.toString());
-        cw.setNext(true);
-        assertEquals("101", cw.toString());
-        cw.reverse();
-        assertEquals("101", cw.toString());
-    }
+
 }

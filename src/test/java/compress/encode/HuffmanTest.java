@@ -74,8 +74,8 @@ public class HuffmanTest {
         assertEquals("11", codewords[C + OFF].toString());
 
         Codeword cwC = codewords[C + OFF];
-        assertEquals(true, cwC.getBits().get(0));
-        assertEquals(true, cwC.getBits().get(1));
+        assertEquals(true, cwC.get(0));
+        assertEquals(true, cwC.get(1));
     }
 
     @Test
