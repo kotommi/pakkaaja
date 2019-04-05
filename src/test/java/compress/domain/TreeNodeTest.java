@@ -2,8 +2,7 @@ package compress.domain;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TreeNodeTest {
 
@@ -25,7 +24,7 @@ public class TreeNodeTest {
         root.setLeft(child);
         root.setRight(child);
         assertEquals(1, root.getDepth());
-        assertEquals(false, root.isLeaf());
+        assertFalse(root.isLeaf());
         assertEquals(1, root.getDepth());
         //don't recurse infinitely
         TreeNode child2 = new TreeNode(0, b);

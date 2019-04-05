@@ -3,8 +3,8 @@ package compress.encode;
 import compress.domain.Codeword;
 import compress.domain.TreeNode;
 import compress.utils.ArrayUtils;
-import compress.utils.ByteList;
-import compress.utils.MinHeap;
+import compress.domain.ByteList;
+import compress.domain.MinHeap;
 
 public class Huffman {
 

@@ -1,22 +1,18 @@
-package compress.utils;
+package compress.domain;
 
-import compress.domain.TreeNode;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class MinHeapTest {
-    private TreeNode[] nodes;
     private MinHeap heap;
 
     @Before
-    public void setup() {
+    public void setUp() {
         final int amount = 10;
-        this.nodes = new TreeNode[amount];
+        TreeNode[] nodes = new TreeNode[amount];
         for (int i = 0; i < amount; i++) {
             nodes[i] = new TreeNode((long) amount - i, (byte) i);
         }

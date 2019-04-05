@@ -1,4 +1,4 @@
-package compress.utils;
+package compress.domain;
 
 import org.junit.Before;
 import org.junit.Test;

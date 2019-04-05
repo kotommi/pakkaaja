@@ -1,4 +1,4 @@
-package compress.utils;
+package compress.domain;
 
 import compress.domain.TreeNode;
 
