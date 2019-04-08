@@ -3,9 +3,7 @@ package compress.domain;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CodewordTest {
 
@@ -19,6 +17,7 @@ public class CodewordTest {
     @Test
     public void initialValuesAreSane() {
         assertEquals(0, cw.getIndex());
+        assertFalse(cw.get(0));
     }
 
     @Test
@@ -34,6 +33,14 @@ public class CodewordTest {
         cw.setNext(true);
         assertFalse(cw.get(1));
         assertTrue(cw.get(0));
+
+        // test for setnext bug
+        cw = new Codeword();
+        cw.setNext(true);
+        cw.setNext(true);
+        cw.setNext(true);
+        assertTrue(cw.get(2));
+        assertFalse(cw.get(3));
     }
 
 
