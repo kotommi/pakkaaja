@@ -1,11 +1,15 @@
 package compress.domain;
 
-import java.util.Arrays;
-
-
+/**
+ * Object reference-style binary tree for Huffman-code generation.
+ */
 public class TreeNode implements Comparable<TreeNode> {
+
+    //the byte this node represents
     private byte id;
+    // weight of this node or the nodes below this
     private long count;
+    //either both are null or defined
     private TreeNode left;
     private TreeNode right;
 
@@ -32,6 +36,11 @@ public class TreeNode implements Comparable<TreeNode> {
         this.right = right;
     }
 
+    /**
+     * Recursive depth-method.
+     *
+     * @return depth of tree. root = depth 0.
+     */
     public int getDepth() {
         if (this.isLeaf()) {
             return 0;

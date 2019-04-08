@@ -8,7 +8,8 @@ package compress.domain;
  * of use and size. Array of 3 bytes would be
  * most optimal in size but the bitwise operations
  * in Java return always ints so that implementation
- * would suffer from casts between the primitives.
+ * would suffer from casts between the primitives and
+ * it would use ints for the intermediate results.
  */
 public class Codeword {
 
@@ -31,7 +32,7 @@ public class Codeword {
      *
      * @param i index, range 0-31
      * @return value of the bit
-     * @throws IndexOutOfBoundsException if i > 31.
+     * @throws IndexOutOfBoundsException if i > 31 or i < 0.
      *                                   The set only holds an int's worth of bits
      */
     public boolean get(int i) {
