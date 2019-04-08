@@ -3,11 +3,17 @@ package compress.domain;
 /**
  * Class representing a Huffman codeword.
  * Uses an int to represent a bitstring.
+ * The codewords are <= 20 bits long so
+ * int32 is a good compromise between ease
+ * of use and size. Array of 3 bytes would be
+ * most optimal in size but the bitwise operations
+ * in Java return always ints so that implementation
+ * would suffer from casts between the primitives.
  */
 public class Codeword {
 
     private int bits;
-    // first unused bit
+    // logical size of the set
     private int index;
 
     public Codeword() {
@@ -32,6 +38,7 @@ public class Codeword {
         if (i > 31 || i < 0) {
             throw new IndexOutOfBoundsException();
         }
+        //shift right i positions and & the bit value
         int bit = bits >> i & 1;
         return bit == 1;
     }
@@ -46,7 +53,7 @@ public class Codeword {
         if (index == 32) {
             throw new IndexOutOfBoundsException("int overflow");
         }
-        if (index == 1)
+        if (index > 0)
             bits = bits << 1;
         if (b) {
             bits = bits | 1;
