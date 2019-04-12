@@ -159,7 +159,8 @@ public class Huffman {
         return decoded;
     }
 
-    public static byte[] encode(byte[] bytes, Codeword[] lookup) {
+
+    public static byte[] encodeData(byte[] bytes, Codeword[] lookup) {
         final ByteList encodedBytes = new ByteList();
         encodedBytes.add((byte) 0);
 

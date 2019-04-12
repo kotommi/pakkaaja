@@ -24,12 +24,11 @@ public class Main {
         }
         final String filename = args[0];
         final byte[] fileBytes = FileUtils.readFile(filename);
-        final int fileBytesCount = fileBytes.length;
         final long[] freqs = ArrayUtils.getFreqs(fileBytes);
         final TreeNode[] treeNodes = Huffman.buildNodes(freqs);
         final TreeNode treeRoot = Huffman.buildTree(treeNodes);
         final Codeword[] lookupTable = Huffman.buildLookupTable(treeRoot);
-        final byte[] encodedBytes = Huffman.encode(fileBytes, lookupTable);
+        final byte[] encodedBytes = Huffman.encodeData(fileBytes, lookupTable);
         FileUtils.writeFile(filename, encodedBytes);
         byte[] asdasd = FileUtils.readFile(filename + ".huf");
         byte[] decodedBytes = Huffman.decode(asdasd, treeRoot);

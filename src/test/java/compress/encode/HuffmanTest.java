@@ -89,7 +89,7 @@ public class HuffmanTest {
          */
 
         final Codeword[] codewords = Huffman.buildLookupTable(Huffman.buildTree(Huffman.buildNodes(freqs)));
-        byte[] encodedBytes = Huffman.encode(stringBytes, codewords);
+        byte[] encodedBytes = Huffman.encodeData(stringBytes, codewords);
 
         final byte usedBits = encodedBytes[0];
         final byte fst = 104; // 1110 1000
@@ -104,7 +104,7 @@ public class HuffmanTest {
     public void decode() {
         TreeNode treeRoot = Huffman.buildTree(Huffman.buildNodes(freqs));
         final Codeword[] codewords = Huffman.buildLookupTable(treeRoot);
-        final byte[] encodedBytes = Huffman.encode(stringBytes, codewords);
+        final byte[] encodedBytes = Huffman.encodeData(stringBytes, codewords);
         final byte[] decoded = Huffman.decode(encodedBytes, treeRoot);
         assertArrayEquals(stringBytes, decoded);
     }
