@@ -120,10 +120,9 @@ public class Huffman {
      * @return Original file contents as array of bytes
      */
     public static byte[] decode(byte[] bytes, TreeNode treeRoot) {
-        int length = treeRoot.getTotalCount();
-        byte[] decoded = new byte[length];
+        ByteList decodedBytes = new ByteList();
 
-        int index = 0; // where to write in decoded array
+        //int index = 0; // where to write in decoded array
         TreeNode current = treeRoot;
         // start from bytes[1], end at second to last
         for (int i = 1; i < bytes.length - 1; i++) {
@@ -138,8 +137,7 @@ public class Huffman {
                 current = (bit == 0) ? current.getLeft() : current.getRight();
                 if (current.isLeaf()) {
                     // write to array and reset the node we're on
-                    decoded[index] = current.getId();
-                    index++;
+                    decodedBytes.add(current.getId());
                     current = treeRoot;
                 }
             }
@@ -151,12 +149,11 @@ public class Huffman {
             int bit = (last >> j) & 1;
             current = bit == 0 ? current.getLeft() : current.getRight();
             if (current.isLeaf()) {
-                decoded[index] = current.getId();
-                index++;
+                decodedBytes.add(current.getId());
                 current = treeRoot;
             }
         }
-        return decoded;
+        return decodedBytes.toArray();
     }
 
 
