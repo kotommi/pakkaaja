@@ -58,4 +58,18 @@ public class ArrayUtilsTest {
         assertArrayEquals(expected, result);
     }
 
+    @Test
+    public void sliceTest() {
+        final byte[] bytes = new byte[256];
+        byte b = Byte.MIN_VALUE;
+        for (int i = 0; i < 256; i++) {
+            bytes[i] = b;
+            b++;
+        }
+        byte[] slice = ArrayUtils.slice(bytes, 15, bytes.length);
+        byte[] expected = Arrays.copyOfRange(bytes, 15, bytes.length);
+        assertArrayEquals(expected, slice);
+
+    }
+
 }

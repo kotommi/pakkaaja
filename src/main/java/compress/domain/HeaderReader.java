@@ -14,7 +14,6 @@ public class HeaderReader {
         this.arr = arr;
         this.leaves = arr[0] + offset;
         this.i = 1;
-        System.out.println("leaves: " + leaves);
     }
 
     public boolean hasNext() {
@@ -40,4 +39,5 @@ public class HeaderReader {
     public int getIndex() {
         return i;
     }
+
 }

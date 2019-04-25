@@ -2,16 +2,18 @@ package compress.encode;
 
 import compress.domain.HeaderReader;
 import compress.domain.TreeNode;
+import compress.utils.ArrayUtils;
 
 public class Decode {
 
-    public byte[] decodeHuffman(byte[] encodedBytes) {
+    public static byte[] decodeHuffman(byte[] encodedBytes) {
+        //build tree from header
         HeaderReader headerReader = new HeaderReader(encodedBytes);
         TreeNode treeRoot = HufHeader.decodeTree(headerReader);
 
         // slice the header out
-        final byte[] decodedBytes = Huffman.decode(encodedBytes, treeRoot);
+        byte[] data = ArrayUtils.slice(encodedBytes, headerReader.getIndex(), encodedBytes.length);
 
-        return decodedBytes;
+        return Huffman.decode(data, treeRoot);
     }
 }

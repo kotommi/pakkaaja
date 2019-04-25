@@ -51,5 +51,12 @@ public final class ArrayUtils {
         return result;
     }
 
+    public static byte[] slice(byte[] bytes, int fromIndex, int toIndex) {
+        byte[] result = new byte[toIndex - fromIndex];
+        for (int i = fromIndex; i < toIndex; i++) {
+            result[i - fromIndex] = bytes[i];
+        }
+        return result;
+    }
 
 }
