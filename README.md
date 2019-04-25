@@ -2,11 +2,17 @@
 
 Käyttö:
 ```
-./gradlew run --args=[filename]
+compress: ./gradlew run --args="-c text.txt"
+extract: ./gradlew run --args="-x text.txt.huf"
 ```
-Tällä hetkellä outputtaa tiedoston original.file.huf joka on pakattu tiedosto ilman otsaketta(todo) ja tiedoston decoded.file.huf joka on  jvm:n muistissa olevan Huffman-puun avulla purettu. Sen että tiedosto on pysynyt samana pakkaus ja purkukierroksen jälkeen voi tarkistaa loitsulla 
+Pakattua tiedostokokoa voi tutkia vaikka komennolla
 ```
-diff -s original.file decoded.file.huf
+ls -lhS
+```   
+
+Sen että tiedosto on pysynyt samana pakkaamisen ja purkamisen jälkeen voi tarkistaa komennolla:
+```
+diff -s original.file extracted.file
 ```
 
 ## Dokumentaatio
