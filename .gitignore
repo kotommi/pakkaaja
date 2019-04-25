@@ -2,10 +2,5 @@ build/
 *~
 .idea/
 .gradle/
-*.txt
-*.png
 *.iml
-*.mp4
-*.huf
-*.pdf
 out/
