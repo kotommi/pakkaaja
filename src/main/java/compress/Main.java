@@ -1,11 +1,7 @@
 package compress;
 
-import compress.domain.Codeword;
-import compress.domain.TreeNode;
 import compress.encode.Decode;
 import compress.encode.Encode;
-import compress.encode.Huffman;
-import compress.utils.ArrayUtils;
 import compress.utils.FileUtils;
 
 import java.io.IOException;
@@ -29,7 +25,7 @@ public class Main {
         }
         String mode = args[0];
         if (mode.charAt(0) != '-') {
-            throw new IllegalArgumentException("asd");
+            throw new IllegalArgumentException("first argument must be mode [-e/-x/-a/-h]");
         }
 
         final String filename = args[1];
@@ -38,24 +34,34 @@ public class Main {
 
         switch (mode) {
             case "-c":
-                byte[] bytes = Encode.encodeHuffman(fileBytes);
-                FileUtils.writeFile(filename + ".huf", bytes);
+                compressFile(fileBytes, filename);
                 break;
             case "-x":
-                byte[] decodedBytes = Decode.decodeHuffman(fileBytes);
-                FileUtils.writeFile(filename.substring(0, filename.length() - 4) + ".dec", decodedBytes);
+                extractFile(fileBytes, filename);
                 break;
             case "-a":
-                //do both
+                doItAll(fileBytes, filename);
                 break;
             default:
                 System.out.println("Unsupported operation");
                 break;
         }
+    }
 
+    private static void doItAll(byte[] fileBytes, String filename) throws IOException {
+        compressFile(fileBytes, filename);
+        byte[] tempBytes = FileUtils.readFile(filename);
+        extractFile(tempBytes, filename);
+    }
 
-        //byte[] encodedBytes = Encode.encodeHuffman(fileBytes);
-        //FileUtils.writeFile(filename, encodedBytes);
+    private static void compressFile(byte[] fileBytes, String filename) {
+        byte[] bytes = Encode.encodeHuffman(fileBytes);
+        FileUtils.writeFile(filename + ".huf", bytes);
+    }
+
+    private static void extractFile(byte[] fileBytes, String filename) {
+        byte[] decodedBytes = Decode.decodeHuffman(fileBytes);
+        FileUtils.writeFile(filename.substring(0, filename.length() - 4), decodedBytes);
     }
 
 }

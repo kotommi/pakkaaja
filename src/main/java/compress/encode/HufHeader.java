@@ -4,6 +4,17 @@ import compress.domain.ByteList;
 import compress.domain.HeaderReader;
 import compress.domain.TreeNode;
 
+/**
+ * Reads and writes headers for Huffman files.
+ * The header format is:
+ * [Leaf count, 1 byte]
+ * Then repeating: [Node type, 1 byte] [Node value, 1 byte, optional]
+ * Where leaf count is used to infer where the header ends,
+ * Node type is 1 for leaf node, 0 for parent,
+ * and leafnodes have a value following them.
+ * <p>
+ * This could be improved to only use 1 bit for the node type.
+ */
 public class HufHeader {
 
     private static int OFF = 128;
@@ -13,7 +24,7 @@ public class HufHeader {
     public static byte[] encodeTree(TreeNode root) {
         ByteList bytes = new ByteList();
         // mark how many leafNodes to expect.
-        // gotta do some scaling to make the int to byte conversion.
+        // Do some scaling to make the int to byte conversion.
         int leafCount = root.getLeafCount() - 1;
         leafCount -= OFF;
         bytes.add((byte) leafCount);
@@ -24,9 +35,7 @@ public class HufHeader {
     }
 
     /**
-     * Schema: 1 marks a leaf and is followed by a byte with the value.
-     * 0 marks an empty parent node and is followed by nothing.
-     *
+     * Recursive
      * @param node
      * @param bytes
      */

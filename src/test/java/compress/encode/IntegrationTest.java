@@ -14,11 +14,15 @@ public class IntegrationTest {
 
     @Test
     public void HuffmanEncodeDecodeTest() throws IOException {
+        final String shortFile = "testi.txt";
+        testFile(shortFile);
+
         final String textFile = "tarinat.txt";
         testFile(textFile);
 
         final String pdfFile = "testi.pdf";
         testFile(pdfFile);
+
     }
 
     private void testFile(String filename) throws IOException {

@@ -28,7 +28,7 @@ public final class FileUtils {
 
     public static void writeFile(String filename, byte[] encodedBytes) {
         final String userDir = System.getProperty("user.dir");
-        final String filepath = userDir + "/" + filename + ".huf";
+        final String filepath = userDir + "/" + filename;
         try {
             Files.write(encodedBytes, new File(filepath));
         } catch (IOException e) {
