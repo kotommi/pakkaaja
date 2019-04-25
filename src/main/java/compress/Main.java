@@ -2,11 +2,13 @@ package compress;
 
 import compress.domain.Codeword;
 import compress.domain.TreeNode;
+import compress.encode.Encode;
 import compress.encode.Huffman;
 import compress.utils.ArrayUtils;
 import compress.utils.FileUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class Main {
@@ -22,17 +24,11 @@ public class Main {
             System.out.println("No arguments given");
             return;
         }
+        System.out.println(Arrays.toString(args));
         final String filename = args[0];
         final byte[] fileBytes = FileUtils.readFile(filename);
-        final long[] freqs = ArrayUtils.getFreqs(fileBytes);
-        final TreeNode[] treeNodes = Huffman.buildNodes(freqs);
-        final TreeNode treeRoot = Huffman.buildTree(treeNodes);
-        final Codeword[] lookupTable = Huffman.buildLookupTable(treeRoot);
-        final byte[] encodedBytes = Huffman.encodeData(fileBytes, lookupTable);
+        byte[] encodedBytes = Encode.encodeHuffman(fileBytes);
         FileUtils.writeFile(filename, encodedBytes);
-        byte[] asdasd = FileUtils.readFile(filename + ".huf");
-        byte[] decodedBytes = Huffman.decode(asdasd, treeRoot);
-        FileUtils.writeFile("decoded.file", decodedBytes);
     }
 
 }

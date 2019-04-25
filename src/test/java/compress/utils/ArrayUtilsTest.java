@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class ArrayUtilsTest {
@@ -37,6 +38,24 @@ public class ArrayUtilsTest {
         byte[] bytes = {};
         long[] freqs = ArrayUtils.getFreqs(bytes);
         assertEquals(0, Arrays.stream(freqs).sum());
+    }
+
+    @Test
+    public void concatTest() {
+        byte[] first = {0, 1};
+        byte[] second = {2, 3};
+        byte[] result = ArrayUtils.concat(first, second);
+        final byte[] expected = {0, 1, 2, 3};
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
+    public void concatTest2() {
+        byte[] first = {0, 1};
+        byte[] second = {2, 3, 5, 6};
+        byte[] result = ArrayUtils.concat(first, second);
+        final byte[] expected = {0, 1, 2, 3, 5, 6};
+        assertArrayEquals(expected, result);
     }
 
 }

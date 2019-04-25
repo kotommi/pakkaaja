@@ -37,5 +37,19 @@ public final class ArrayUtils {
         return count;
     }
 
+    public static byte[] concat(byte[] first, byte[] second) {
+        int total = first.length + second.length;
+        final byte[] result = new byte[total];
+        int i;
+        for (i = 0; i < first.length; i++) {
+            result[i] = first[i];
+        }
+        for (int j = i; j < total; j++) {
+            result[j] = second[j - i];
+        }
+
+        return result;
+    }
+
 
 }

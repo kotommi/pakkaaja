@@ -7,8 +7,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class HuffmanTest {
 
@@ -74,8 +73,8 @@ public class HuffmanTest {
         assertEquals("11", codewords[C + OFF].toString());
 
         Codeword cwC = codewords[C + OFF];
-        assertEquals(true, cwC.get(0));
-        assertEquals(true, cwC.get(1));
+        assertTrue(cwC.get(0));
+        assertTrue(cwC.get(1));
     }
 
     @Test

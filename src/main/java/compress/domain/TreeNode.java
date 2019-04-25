@@ -55,6 +55,17 @@ public class TreeNode implements Comparable<TreeNode> {
         return this.left.getTotalCount() + this.right.getTotalCount();
     }
 
+    public int getLeafCount() {
+        if (this.isLeaf()) {
+            return 1;
+        }
+        return this.left.getLeafCount() + this.right.getLeafCount();
+    }
+
+    public void setId(byte newId) {
+        this.id = newId;
+    }
+
     public TreeNode getLeft() {
         return this.left;
     }
@@ -67,9 +78,10 @@ public class TreeNode implements Comparable<TreeNode> {
         return left == null && right == null;
     }
 
+
     @Override
     public String toString() {
-        String s = "count: " + count;
+        String s = "id: " + id + ", count: " + count;
         if (left != null) {
             s = s + "\n" + left.toString();
         }
