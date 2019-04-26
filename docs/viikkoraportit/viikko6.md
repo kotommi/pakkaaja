@@ -11,3 +11,5 @@ Vaikuttaa siltä että voin uudelleenkäyttää aika hyvin jo tekemiäni luokkia
 Epäselvää tällä hetkellä on miten "variable width"-koodauksen purkaminen toteutetaan.
 Voi olla että jätän sen pois aluksi ja käytän kiinteän pituisia koodisanoja. 
 Ehkä yksinkertaisemman version toteuttamisen aikana selviää miten se voisi toimia.  
+
+Käytin aikaa yhteensä noin 25 tuntia työhön ja vertaisarviointiin.
