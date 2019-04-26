@@ -5,15 +5,6 @@ Käyttö:
 compress: ./gradlew run --args="-c text.txt"
 extract: ./gradlew run --args="-x text.txt.huf"
 ```
-Pakattua tiedostokokoa voi tutkia vaikka komennolla
-```
-ls -lhS
-```   
-
-Sen että tiedosto on pysynyt samana pakkaamisen ja purkamisen jälkeen voi tarkistaa komennolla:
-```
-diff -s original.file extracted.file
-```
 
 ## Dokumentaatio
 [Määrittely](https://github.com/kotommi/pakkaaja/blob/master/docs/M%C3%A4%C3%A4rittely.md)
