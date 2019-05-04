@@ -1,5 +1,8 @@
 package compress.domain;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Dynamic byte-array for convenience purposes
  */
@@ -32,7 +35,7 @@ public class ByteList {
      *
      * @param initialBytes initial bytes for the list.
      */
-    public ByteList(byte[] initialBytes) {
+    public ByteList(byte... initialBytes) {
         this.bytes = new byte[initialBytes.length];
         for (int i = 0; i < initialBytes.length; i++) {
             this.bytes[i] = initialBytes[i];
@@ -133,5 +136,35 @@ public class ByteList {
         this.size = 0;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ByteList byteList = (ByteList) o;
+        return size == byteList.size &&
+                Arrays.equals(bytes, byteList.bytes);
+    }
 
+    @Override
+    public int hashCode() {
+        int result = size * 599;
+        for (int i = 0; i < size; i++) {
+            result += (i + 1) * bytes[i] * 31;
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < size; i++) {
+            s += bytes[i];
+            if (i < size - 1) {
+                s += ", ";
+            }
+        }
+
+
+        return s;
+    }
 }
