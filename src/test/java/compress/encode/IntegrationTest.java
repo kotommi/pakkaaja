@@ -27,11 +27,20 @@ public class IntegrationTest {
 
     private void testFile(String filename) throws IOException {
         String testFileName = "src/test/resources/" + filename;
-        byte[] originalFileBytes = FileUtils.readFile(testFileName);
+        final byte[] originalFileBytes = FileUtils.readFile(testFileName);
+        System.out.println("Filename: " + testFileName);
+        System.out.println("Original length: " + originalFileBytes.length + " bytes");
 
-        byte[] encodedBytes = Encode.encodeHuffman(originalFileBytes);
-        byte[] decodedBytes = Decode.decodeHuffman(encodedBytes);
+        //Huffman
+        final byte[] hufEncoded = Encode.encodeHuffman(originalFileBytes);
+        System.out.println("Huffman length: " + hufEncoded.length + " bytes");
+        final byte[] hufDecoded = Decode.decodeHuffman(hufEncoded);
+        Assert.assertArrayEquals(originalFileBytes, hufDecoded);
 
-        Assert.assertArrayEquals(originalFileBytes, decodedBytes);
+        //LZW
+        final byte[] lzwEncoded = LZW.encode(originalFileBytes);
+        System.out.println("LZW length: " + lzwEncoded.length + " bytes");
+        final byte[] lzwDecoded = LZW.decode(lzwEncoded);
+        Assert.assertArrayEquals(originalFileBytes, lzwDecoded);
     }
 }

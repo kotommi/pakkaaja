@@ -64,6 +64,12 @@ public class ByteList {
         }
     }
 
+    public void addAll(ByteList bl) {
+        for (int i = 0; i < bl.size(); i++) {
+            this.add(bl.get(i));
+        }
+    }
+
     /**
      * Get byte at index i
      *

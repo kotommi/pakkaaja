@@ -1,5 +1,7 @@
 package compress.domain;
 
+import java.util.Objects;
+
 /**
  * Class representing a Huffman codeword.
  * Uses an int to represent a bitstring.
@@ -112,5 +114,10 @@ public class Codeword {
         final Codeword codeword = (Codeword) o;
         return index == codeword.index
                 && bits == codeword.bits;
+    }
+
+    @Override
+    public int hashCode() {
+        return 7 * index * 31 * bits;
     }
 }
