@@ -160,11 +160,25 @@ public class ByteList {
         return true;
     }
 
+    public void remove() {
+        if (this.bytes.length == 0) {
+            throw new IndexOutOfBoundsException("Tried to remove 0th element");
+        }
+        this.size--;
+    }
+
+    /**
+     * int hashCode = 1;
+     * for (E e : list)
+     * hashCode = 31*hashCode + (e==null ? 0 : e.hashCode());
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
-        int result = size * 599;
+        int result = size * 11;
         for (int i = 0; i < size; i++) {
-            result += (i + 1) * bytes[i] * 31;
+            result = result * 61 + bytes[i];
         }
         return result;
     }

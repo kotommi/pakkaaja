@@ -4,6 +4,7 @@ import compress.domain.ByteList;
 import compress.domain.Codeword;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class LZW {
 
@@ -14,9 +15,10 @@ public class LZW {
      * Compresses data with LZW, fixed-length 16-bit codes.
      *
      * @param inputBytes
-     * @return
+     * @return Compressed data.
      */
     public static byte[] encode(byte[] inputBytes) {
+
 
         if (inputBytes.length == 0) {
             return new byte[0];
@@ -27,29 +29,29 @@ public class LZW {
         ByteList outputBytes = new ByteList();
 
 
-        ByteList current = new ByteList(2);
+        ByteList current = new ByteList(10);
         current.add(inputBytes[0]);
 
-
+        // main loop
         for (int i = 1; i < inputBytes.length; i++) {
             final byte next = inputBytes[i];
-            ByteList test = new ByteList(current.size() + 1);
-            test.addAll(current);
-            test.add(next);
-            // if in dict, try a longer string of bytes
-            if (dictionary.containsKey(test)) {
-                current = test;
-            } else {
-                // if not in  dict, add to dict and
-                dictionary.put(test, new Codeword(nextCode, CODE_LENGTH));
-                nextCode++;
-                // write the bytestring that was in dict
+            current.add(next);
 
+            // if in dict, try a longer string of bytes
+            if (!dictionary.containsKey(current)) {
+                // if not in  dict, add to dict and
+                ByteList newKey = new ByteList(current.size());
+                newKey.addAll(current);
+                dictionary.put(newKey, new Codeword(nextCode, CODE_LENGTH));
+                nextCode++;
+                // remove the last byte before writing
+                current.remove();
+                // write the bytestring that was in dict
                 writeCodeword(dictionary.get(current), outputBytes);
 
                 // start new string from the last byte that
                 // wasn't added.
-                ByteList newlist = new ByteList(2);
+                ByteList newlist = new ByteList(10);
                 newlist.add(next);
                 current = newlist;
                 // reset dict if full
@@ -61,6 +63,7 @@ public class LZW {
         }
         // write the last byte(s)
         writeCodeword(dictionary.get(current), outputBytes);
+
         return outputBytes.toArray();
 
     }
