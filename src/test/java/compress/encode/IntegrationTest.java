@@ -32,15 +32,45 @@ public class IntegrationTest {
         System.out.println("Original length: " + originalFileBytes.length + " bytes");
 
         //Huffman
-        final byte[] hufEncoded = Encode.encodeHuffman(originalFileBytes);
-        System.out.println("Huffman length: " + hufEncoded.length + " bytes");
-        final byte[] hufDecoded = Decode.decodeHuffman(hufEncoded);
-        Assert.assertArrayEquals(originalFileBytes, hufDecoded);
+        testHuffman(originalFileBytes);
 
         //LZW
+        testLZW(originalFileBytes);
+
+    }
+
+    private void testLZW(byte[] originalFileBytes) {
+        long start, finish, diff;
+        start = System.currentTimeMillis();
         final byte[] lzwEncoded = LZW.encode(originalFileBytes);
+        finish = System.currentTimeMillis();
+        diff = finish - start;
+        System.out.println("LZW encode took " + diff + " ms");
         System.out.println("LZW length: " + lzwEncoded.length + " bytes");
+
+        start = System.currentTimeMillis();
         final byte[] lzwDecoded = LZW.decode(lzwEncoded);
+        finish = System.currentTimeMillis();
+        diff = finish - start;
+        System.out.println("LZW decode took " + diff + " ms");
         Assert.assertArrayEquals(originalFileBytes, lzwDecoded);
+    }
+
+    private void testHuffman(byte[] originalFileBytes) {
+        long start, finish, diff;
+
+        start = System.currentTimeMillis();
+        final byte[] hufEncoded = Encode.encodeHuffman(originalFileBytes);
+        finish = System.currentTimeMillis();
+        diff = finish - start;
+        System.out.println("Huffman encode took " + diff + " ms");
+        System.out.println("Huffman length: " + hufEncoded.length + " bytes");
+
+        start = System.currentTimeMillis();
+        final byte[] hufDecoded = Decode.decodeHuffman(hufEncoded);
+        finish = System.currentTimeMillis();
+        diff = finish - start;
+        System.out.println("Huffman decode took " + diff + " ms");
+        Assert.assertArrayEquals(originalFileBytes, hufDecoded);
     }
 }

@@ -148,7 +148,16 @@ public class ByteList {
         if (o == null || getClass() != o.getClass()) return false;
         ByteList byteList = (ByteList) o;
         return size == byteList.size &&
-                Arrays.equals(bytes, byteList.bytes);
+                contentsEqual(bytes, byteList.bytes, this.size);
+    }
+
+    private boolean contentsEqual(byte[] first, byte[] second, int size) {
+        for (int i = 0; i < size; i++) {
+            if (first[i] != second[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

@@ -3,7 +3,6 @@ package compress.encode;
 import compress.domain.ByteList;
 import compress.domain.Codeword;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LZW {
@@ -20,7 +19,7 @@ public class LZW {
     public static byte[] encode(byte[] inputBytes) {
 
         if (inputBytes.length == 0) {
-            return null;
+            return new byte[0];
         }
 
         HashMap<ByteList, Codeword> dictionary = initEncodeDict();
@@ -28,28 +27,29 @@ public class LZW {
         ByteList outputBytes = new ByteList();
 
 
-        ByteList current = new ByteList(1);
+        ByteList current = new ByteList(2);
         current.add(inputBytes[0]);
 
-        //System.out.println(current);
+
         for (int i = 1; i < inputBytes.length; i++) {
-            byte next = inputBytes[i];
-            ByteList test = new ByteList(current.toArray());
+            final byte next = inputBytes[i];
+            ByteList test = new ByteList(current.size() + 1);
+            test.addAll(current);
             test.add(next);
             // if in dict, try a longer string of bytes
             if (dictionary.containsKey(test)) {
                 current = test;
             } else {
-
                 // if not in  dict, add to dict and
                 dictionary.put(test, new Codeword(nextCode, CODE_LENGTH));
                 nextCode++;
                 // write the bytestring that was in dict
+
                 writeCodeword(dictionary.get(current), outputBytes);
 
                 // start new string from the last byte that
                 // wasn't added.
-                ByteList newlist = new ByteList(1);
+                ByteList newlist = new ByteList(2);
                 newlist.add(next);
                 current = newlist;
                 // reset dict if full
@@ -156,7 +156,7 @@ public class LZW {
 
         Codeword oldCode = input[0];
         ByteList nextOutput = dictionary.get(oldCode);
-        output.addAll(nextOutput.toArray());
+        output.addAll(nextOutput);
 
 
         for (int i = 1; i < input.length; i++) {
@@ -169,14 +169,15 @@ public class LZW {
                 // Codeword wasn't in dict so it must
                 // be
                 nextOutput = new ByteList();
-                nextOutput.addAll(dictionary.get(oldCode).toArray());
-                nextOutput.add(dictionary.get(oldCode).get(0));
+                ByteList temp = dictionary.get(oldCode);
+                nextOutput.addAll(temp);
+                nextOutput.add(temp.get(0));
 
             }
-            output.addAll(nextOutput.toArray());
+            output.addAll(nextOutput);
 
             ByteList newDictEntry = new ByteList();
-            newDictEntry.addAll(dictionary.get(oldCode).toArray());
+            newDictEntry.addAll(dictionary.get(oldCode));
             newDictEntry.add(nextOutput.get(0));
             if (dictionary.size() == MAX_CODES) {
                 dictionary = initDecodeDict();
