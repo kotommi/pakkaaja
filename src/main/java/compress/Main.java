@@ -49,35 +49,49 @@ public class Main {
     }
 
     private static void compressFile(byte[] fileBytes, String filename, String algo) {
+        System.out.println("Compressing " + filename + ", original size " + fileBytes.length + " bytes.");
+        int compressedSize = 0;
         switch (algo) {
             case "huf":
                 byte[] hufBytes = Encode.encodeHuffman(fileBytes);
+                compressedSize = hufBytes.length;
                 FileUtils.writeFile(filename + ".huf", hufBytes);
+                System.out.println("Compressed to " + filename + ".huf");
                 break;
             case "lzw":
-                byte[] lzwBytes = Encode.encodeHuffman(fileBytes);
+                byte[] lzwBytes = Encode.encodeLZW(fileBytes);
+                compressedSize = lzwBytes.length;
                 FileUtils.writeFile(filename + ".lzw", lzwBytes);
+                System.out.println("Compressed to " + filename + ".lzw");
                 break;
             default:
                 System.out.println("No algorithm selected\n Choose huf or lzw");
         }
+        double ratio = (double) compressedSize / (double) fileBytes.length * 100;
+        System.out.println("Compressed size " + compressedSize + " bytes.");
+        System.out.println(ratio + "% of the original");
 
     }
 
     private static void extractFile(byte[] fileBytes, String filename, String algo) {
+        System.out.println("Decompressing " + filename + ", compressed size " + fileBytes.length + " bytes.");
+        String slicedName = filename.substring(0, filename.length() - 4);
+        int decompressedBytes = 0;
         switch (algo) {
             case "huf":
                 byte[] decodedHufBytes = Decode.decodeHuffman(fileBytes);
-                FileUtils.writeFile(filename.substring(0, filename.length() - 4), decodedHufBytes);
+                decompressedBytes = decodedHufBytes.length;
+                FileUtils.writeFile(slicedName, decodedHufBytes);
                 break;
             case "lzw":
-                byte[] decodedLZWBytes = Decode.decodeHuffman(fileBytes);
-                FileUtils.writeFile(filename.substring(0, filename.length() - 4), decodedLZWBytes);
+                byte[] decodedLZWBytes = Decode.decodeLZW(fileBytes);
+                decompressedBytes = decodedLZWBytes.length;
+                FileUtils.writeFile(slicedName, decodedLZWBytes);
                 break;
             default:
                 System.out.println("No algorithm selected\n Choose huf or lzw");
         }
-
+        System.out.println("Decompressed file to " + slicedName + ", decompressed size " + decompressedBytes + " bytes");
     }
 
 }

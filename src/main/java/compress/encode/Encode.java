@@ -24,4 +24,8 @@ public class Encode {
 
         return encodedBytes;
     }
+
+    public static byte[] encodeLZW(byte[] fileBytes) {
+        return LZW.encode(fileBytes);
+    }
 }

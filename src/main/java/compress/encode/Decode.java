@@ -16,4 +16,8 @@ public class Decode {
 
         return Huffman.decode(data, treeRoot);
     }
+
+    public static byte[] decodeLZW(byte[] encodedBytes) {
+        return LZW.decode(encodedBytes);
+    }
 }
