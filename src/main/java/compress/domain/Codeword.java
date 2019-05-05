@@ -22,7 +22,7 @@ public class Codeword {
         this.index = 0;
     }
 
-    private Codeword(int bits, int index) {
+    public Codeword(int bits, int index) {
         this.bits = bits;
         this.index = index;
     }
@@ -88,6 +88,10 @@ public class Codeword {
     @Override
     public String toString() {
         return index == 0 ? "" : Integer.toBinaryString(bits);
+    }
+
+    public int getIntValue() {
+        return this.bits;
     }
 
 

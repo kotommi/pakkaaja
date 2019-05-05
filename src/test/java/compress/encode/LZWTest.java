@@ -1,6 +1,8 @@
 package compress.encode;
 
 import compress.domain.ByteList;
+import compress.domain.Codeword;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import static org.junit.Assert.*;
 public class LZWTest {
 
     private byte[] stringBytes = {B, A, B, A, A, B, A, A, A};
-    private int[] decodedCodes = {98, 97, 128, 129, 97, 132};
+    private int[] decodedCodes = {226, 225, 256, 257, 225, 260};
 
     private final static byte A = 97;
     private final static byte B = 98;
@@ -22,15 +24,15 @@ public class LZWTest {
     @Test
     public void encode() {
         System.out.println("input: " + Arrays.toString(stringBytes));
-        ArrayList<Integer> output = LZW.encode(stringBytes);
-        Stream<Integer> integerStream = output.stream().map((Integer i) -> i - 128);
-        List<Integer> collect = integerStream.collect(Collectors.toList());
-        System.out.println("encoded output: " + collect);
+        ArrayList<Codeword> output = LZW.encode(stringBytes);
+
+        //[226, 225, 256, 257, 225, 260]
+        System.out.println("encoded output: " + output);
     }
 
     @Test
     public void decode() {
-        ArrayList<Integer> input = new ArrayList();
+        ArrayList<Integer> input = new ArrayList<>();
         for (int i : decodedCodes) {
             input.add(i);
         }
@@ -38,8 +40,9 @@ public class LZWTest {
 
         byte[] decode = LZW.decode(input);
         for (int i = 0; i < decode.length; i++) {
-            decode[i] += 128;
+            //decode[i] += 128;
         }
         System.out.println("decoded output: " + Arrays.toString(decode));
+        Assert.assertArrayEquals(stringBytes, decode);
     }
 }
