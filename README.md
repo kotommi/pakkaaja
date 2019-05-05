@@ -2,8 +2,8 @@
 
 Käyttö:
 ```
-compress: ./gradlew run --args="-c text.txt"
-extract: ./gradlew run --args="-x text.txt.huf"
+compress: ./gradlew run --args="-c huf/lzw text.txt"
+extract: ./gradlew run --args="-x huf/lzw text.txt.huf/lzw"
 ```
 
 ## Dokumentaatio
