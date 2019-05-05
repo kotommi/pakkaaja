@@ -1,8 +1,5 @@
 package compress.domain;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 /**
  * Dynamic byte-array for convenience purposes
  */

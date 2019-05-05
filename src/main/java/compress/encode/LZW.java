@@ -4,7 +4,6 @@ import compress.domain.ByteList;
 import compress.domain.Codeword;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class LZW {
 

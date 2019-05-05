@@ -1,7 +1,5 @@
 package compress.domain;
 
-import java.util.Objects;
-
 /**
  * Class representing a Huffman codeword.
  * Uses an int to represent a bitstring.
