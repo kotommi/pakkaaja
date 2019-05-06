@@ -5,7 +5,6 @@ import compress.encode.Encode;
 import compress.utils.FileUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 
 public class Main {
@@ -18,7 +17,7 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
 
-        System.out.println(Arrays.toString(args));
+        //System.out.println(Arrays.toString(args));
         if (args.length == 0) {
             System.out.println("No arguments given");
             System.out.println("Usage: -[c/x/h] [huf/lzw] filename");
@@ -68,8 +67,9 @@ public class Main {
                 System.out.println("No algorithm selected\n Choose huf or lzw");
         }
         double ratio = (double) compressedSize / (double) fileBytes.length * 100;
+        String format = String.format("%.2f", ratio);
         System.out.println("Compressed size " + compressedSize + " bytes.");
-        System.out.println(ratio + "% of the original");
+        System.out.println(format + "% of the original");
 
     }
 
