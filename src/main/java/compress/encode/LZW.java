@@ -1,7 +1,6 @@
 package compress.encode;
 
 import compress.domain.ByteList;
-import compress.domain.Codeword;
 import compress.domain.TrieNode;
 
 public class LZW {
@@ -39,7 +38,7 @@ public class LZW {
             // if in dict, try a longer string of bytes
             if (!dictionary.contains(current)) {
                 // if not in  dict, add to dict and
-                dictionary.put(current, new Codeword(nextCode, CODE_LENGTH));
+                dictionary.put(current, nextCode);
                 nextCode++;
                 // remove the last byte before writing
                 current.remove();
@@ -75,7 +74,7 @@ public class LZW {
         for (int i = 0; i <= 255; i++) {
             // shift the int to byte range
             byte[] b = {(byte) (i - 128)};
-            trieRoot.put(new ByteList(b), new Codeword(i, CODE_LENGTH));
+            trieRoot.put(new ByteList(b), i);
         }
         return trieRoot;
     }
@@ -87,10 +86,9 @@ public class LZW {
      * @param code   Codeword to write.
      * @param output List being written to.
      */
-    private static void writeCodeword(Codeword code, ByteList output) {
-        int bits = code.getIntValue();
-        byte first = (byte) ((bits >> 8) & 0xFF);
-        byte second = (byte) (bits & 0xFF);
+    private static void writeCodeword(int code, ByteList output) {
+        byte first = (byte) ((code >> 8) & 0xFF);
+        byte second = (byte) (code & 0xFF);
         output.addAll(first, second);
     }
 

@@ -1,18 +1,11 @@
 package compress.encode;
 
-import compress.domain.ByteList;
-import compress.domain.Codeword;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 public class LZWTest {
 

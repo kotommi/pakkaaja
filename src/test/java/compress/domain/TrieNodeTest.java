@@ -3,7 +3,6 @@ package compress.domain;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class TrieNodeTest {
 
@@ -16,12 +15,12 @@ public class TrieNodeTest {
             byte[] b = {(byte) (i - 128)};
             ByteList byteList = new ByteList(b);
             arr[i] = byteList;
-            trieRoot.put(byteList, new Codeword(i, 16));
+            trieRoot.put(byteList, i);
         }
 
         for (int i = 0; i <= 255; i++) {
-            Codeword codeword = trieRoot.get(arr[i]);
-            assertEquals(new Codeword(i, 16), codeword);
+            int code = trieRoot.get(arr[i]);
+            assertEquals(i, code);
         }
 
     }
@@ -32,10 +31,9 @@ public class TrieNodeTest {
         ByteList bl = new ByteList();
         bl.addAll(bytes);
         TrieNode treeRoot = new TrieNode();
-        Codeword code = new Codeword(0, 0);
+        int code = 0;
         treeRoot.put(bl, code);
-        Codeword found = treeRoot.get(bl);
-        assertNotNull(found);
+        int found = treeRoot.get(bl);
         assertEquals(code, found);
     }
 
