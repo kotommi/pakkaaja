@@ -37,6 +37,13 @@ public final class ArrayUtils {
         return count;
     }
 
+    /**
+     * Concatenate two arrays into one.
+     *
+     * @param first  head of new array
+     * @param second tail of new array
+     * @return Concatenated array first+second.
+     */
     public static byte[] concat(byte[] first, byte[] second) {
         int total = first.length + second.length;
         final byte[] result = new byte[total];
@@ -51,6 +58,14 @@ public final class ArrayUtils {
         return result;
     }
 
+    /**
+     * Get a sub-array from input.
+     *
+     * @param bytes     Array to slice
+     * @param fromIndex Index to start, inclusive
+     * @param toIndex   Index to stop, exclusive
+     * @return Subarray arr[from]...arr[to]
+     */
     public static byte[] slice(byte[] bytes, int fromIndex, int toIndex) {
         byte[] result = new byte[toIndex - fromIndex];
         for (int i = fromIndex; i < toIndex; i++) {

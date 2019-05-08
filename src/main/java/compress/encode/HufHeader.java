@@ -12,7 +12,6 @@ import compress.domain.TreeNode;
  * Where leaf count is used to infer where the header ends,
  * Node type is 1 for leaf node, 0 for parent,
  * and leafnodes have a value following them.
- * <p>
  * This could be improved to only use 1 bit for the node type.
  */
 public class HufHeader {

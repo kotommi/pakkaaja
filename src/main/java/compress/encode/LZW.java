@@ -5,7 +5,6 @@ import compress.domain.TrieNode;
 
 public class LZW {
 
-    private final static int CODE_LENGTH = 16;
     private final static int MAX_CODES = 65536;
 
     /**
