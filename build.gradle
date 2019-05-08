@@ -13,6 +13,11 @@ jar {
     }
 }
 
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+}
+
 checkstyle {
     toolVersion "8.18"
 }
