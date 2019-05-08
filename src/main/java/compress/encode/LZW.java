@@ -22,9 +22,9 @@ public class LZW {
         TrieNode dictionary = initEncodeDict();
         int nextCode = 256;
 
-        ByteList outputBytes = new ByteList();
+        ByteList outputBytes = new ByteList(inputBytes.length / 2);
 
-        ByteList current = new ByteList(10);
+        ByteList current = new ByteList(3);
         current.add(inputBytes[0]);
 
 
@@ -33,7 +33,6 @@ public class LZW {
 
             final byte next = inputBytes[i];
             current.add(next);
-
             // if in dict, try a longer string of bytes
             if (!dictionary.contains(current)) {
                 // if not in  dict, add to dict and

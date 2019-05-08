@@ -33,9 +33,11 @@ public class IntegrationTest {
 
         //Huffman
         testHuffman(originalFileBytes);
+        System.out.println("------------------------------------");
 
         //LZW
         testLZW(originalFileBytes);
+        System.out.println("------------------------------------");
 
     }
 
@@ -46,6 +48,7 @@ public class IntegrationTest {
         finish = System.currentTimeMillis();
         diff = finish - start;
         System.out.println("LZW encode took " + diff + " ms");
+        System.out.println("speed: " + originalFileBytes.length / diff + " bytes / ms");
         System.out.println("LZW length: " + lzwEncoded.length + " bytes");
 
         start = System.currentTimeMillis();
@@ -64,6 +67,7 @@ public class IntegrationTest {
         finish = System.currentTimeMillis();
         diff = finish - start;
         System.out.println("Huffman encode took " + diff + " ms");
+        System.out.println("speed: " + originalFileBytes.length / diff + " bytes / ms");
         System.out.println("Huffman length: " + hufEncoded.length + " bytes");
 
         start = System.currentTimeMillis();
