@@ -13,7 +13,7 @@ public class LZW {
     /**
      * Compresses data with LZW, fixed-length 16-bit codes.
      *
-     * @param inputBytes
+     * @param inputBytes File content as bytes.
      * @return Compressed data.
      */
     public static byte[] encode(byte[] inputBytes) {
@@ -115,10 +115,10 @@ public class LZW {
 
     /**
      * Converts encoded bytes to codewords.
-     * Currently supports fixed-length 16-bit codes.
+     * Supports fixed-length 16-bit codes.
      *
      * @param inputBytes compressed data.
-     * @return Array of codewords in original order.
+     * @return Array of codewords used in original order.
      */
     private static int[] bytesToCodes(byte[] inputBytes) {
         int[] codes = new int[inputBytes.length / 2];
@@ -146,14 +146,17 @@ public class LZW {
         int[] input = bytesToCodes(inputBytes);
 
         // create initial dictionary since
-        // we know what was used in encoding
+        // we know what was used in encoding.
         ByteList[] dictionary = initDecodeDict();
+        // Keep track of the next code and
+        // when to reset dictionary.
         int nextCode = 256;
 
         ByteList output = new ByteList();
 
         // Handle first code by hand
         // to init oldCode
+        // We know its always 1 byte
 
         int oldCode = input[0];
         ByteList nextOutput = dictionary[oldCode];
@@ -168,7 +171,7 @@ public class LZW {
                 nextOutput = dictionary[newCode];
             } else {
                 // Codeword wasn't in dict so it must
-                // be
+                // be old + old[0].
                 nextOutput = new ByteList();
                 ByteList temp = dictionary[oldCode];
                 nextOutput.addAll(temp);
