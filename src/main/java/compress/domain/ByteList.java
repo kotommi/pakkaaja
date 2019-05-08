@@ -71,7 +71,7 @@ public class ByteList {
      * Get byte at index i
      *
      * @param i index
-     * @return
+     * @return byte
      * @throws IndexOutOfBoundsException if i>= size
      */
     public byte get(int i) {
@@ -169,7 +169,7 @@ public class ByteList {
      * for (E e : list)
      * hashCode = 31*hashCode + (e==null ? 0 : e.hashCode());
      *
-     * @return
+     * @return hashcode
      */
     @Override
     public int hashCode() {
