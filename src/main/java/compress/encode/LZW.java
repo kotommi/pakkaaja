@@ -2,8 +2,7 @@ package compress.encode;
 
 import compress.domain.ByteList;
 import compress.domain.Codeword;
-
-import java.util.HashMap;
+import compress.domain.TrieNode;
 
 public class LZW {
 
@@ -22,21 +21,23 @@ public class LZW {
             return new byte[0];
         }
 
-        HashMap<ByteList, Codeword> dictionary = initEncodeDict();
+        TrieNode dictionary = initEncodeDict();
         int nextCode = 256;
-        ByteList outputBytes = new ByteList();
 
+        ByteList outputBytes = new ByteList();
 
         ByteList current = new ByteList(10);
         current.add(inputBytes[0]);
 
+
         // main loop
         for (int i = 1; i < inputBytes.length; i++) {
+
             final byte next = inputBytes[i];
             current.add(next);
 
             // if in dict, try a longer string of bytes
-            if (!dictionary.containsKey(current)) {
+            if (!dictionary.contains(current)) {
                 // if not in  dict, add to dict and
                 ByteList newKey = new ByteList(current.size());
                 newKey.addAll(current);
@@ -46,14 +47,13 @@ public class LZW {
                 current.remove();
                 // write the bytestring that was in dict
                 writeCodeword(dictionary.get(current), outputBytes);
-
                 // start new string from the last byte that
                 // wasn't added.
                 ByteList newlist = new ByteList(10);
                 newlist.add(next);
                 current = newlist;
                 // reset dict if full
-                if (dictionary.size() == MAX_CODES) {
+                if (nextCode == MAX_CODES) {
                     dictionary = initEncodeDict();
                     nextCode = 256;
                 }
@@ -67,8 +67,24 @@ public class LZW {
     }
 
     /**
-     * Writes codewords as bytes to the end of the list.
-     * Currently only supports 16-bit codes.
+     * Creates an initial dictionary for encoding.
+     * Contains all single byte-values.
+     *
+     * @return Initial dictionary for encoding.
+     */
+    private static TrieNode initEncodeDict() {
+        TrieNode trieRoot = new TrieNode();
+        for (int i = 0; i <= 255; i++) {
+            // shift the int to byte range
+            byte[] b = {(byte) (i - 128)};
+            trieRoot.put(new ByteList(b), new Codeword(i, CODE_LENGTH));
+        }
+        return trieRoot;
+    }
+
+    /**
+     * Writes codewords as 2 bytes to the end of the list.
+     * Supports 16-bit codes.
      *
      * @param code   Codeword to write.
      * @param output List being written to.
@@ -80,21 +96,6 @@ public class LZW {
         output.addAll(first, second);
     }
 
-    /**
-     * Creates an initial dictionary for encoding.
-     * Contains all single byte-values.
-     *
-     * @return Initial dictionary for encoding.
-     */
-    private static HashMap<ByteList, Codeword> initEncodeDict() {
-        HashMap<ByteList, Codeword> dictionary = new HashMap<>();
-        for (int i = 0; i <= 255; i++) {
-            // shift the int to byte range
-            byte[] b = {(byte) (i - 128)};
-            dictionary.put(new ByteList(b), new Codeword(i, CODE_LENGTH));
-        }
-        return dictionary;
-    }
 
     /**
      * Creates an initial dictionary for decoding.
@@ -161,7 +162,6 @@ public class LZW {
         int oldCode = input[0];
         ByteList nextOutput = dictionary[oldCode];
         output.addAll(nextOutput);
-
 
         for (int i = 1; i < input.length; i++) {
             int newCode = input[i];

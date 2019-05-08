@@ -11,6 +11,9 @@ Binääripuun vasen/oikea-haarat kuvaavat nollia ja ykkösiä ja niiden avulla l
 Sitten tavut yksinkertaisesti korvataan niitä vastaavilla bittijonoilla. 
 Lisäksi käytetty binääripuu kirjoitetaan tiivistetyssä muodossa otsaakkeksi tiedoston alkuun.   
 
+#### LZW
+write this
+
 ### Ohjelman rakenne
 Ohjelmassa on käytetty luokkia jakamaan koodia loogisiin kokonaisuuksiin. 
 Oliomaista Javaa on ehkä tavallista vähemmän ja sitä on käytetty lähinnä tilan eristämiseen olion sisälle.

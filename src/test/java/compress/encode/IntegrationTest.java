@@ -13,7 +13,7 @@ import java.io.IOException;
 public class IntegrationTest {
 
     @Test
-    public void HuffmanEncodeDecodeTest() throws IOException {
+    public void compressDecompressTest() throws IOException {
         final String shortFile = "testi.txt";
         testFile(shortFile);
 
