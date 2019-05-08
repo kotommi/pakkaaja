@@ -18,7 +18,6 @@ public class LZW {
      */
     public static byte[] encode(byte[] inputBytes) {
 
-
         if (inputBytes.length == 0) {
             return new byte[0];
         }
@@ -103,16 +102,16 @@ public class LZW {
      *
      * @return Initial dictionary for decoding.
      */
-    private static HashMap<Codeword, ByteList> initDecodeDict() {
-        HashMap<Codeword, ByteList> dictionary = new HashMap<>();
+    private static ByteList[] initDecodeDict() {
+        ByteList[] dictionary = new ByteList[MAX_CODES];
         for (int i = 0; i <= 255; i++) {
             // shift the int to byte range
             byte[] b = {(byte) (i - 128)};
-            Codeword c = new Codeword(i, CODE_LENGTH);
-            dictionary.put(c, new ByteList(b));
+            dictionary[i] = new ByteList(b);
         }
         return dictionary;
     }
+
 
     /**
      * Converts encoded bytes to codewords.
@@ -121,14 +120,14 @@ public class LZW {
      * @param inputBytes compressed data.
      * @return Array of codewords in original order.
      */
-    private static Codeword[] bytesToCodes(byte[] inputBytes) {
-        Codeword[] codes = new Codeword[inputBytes.length / 2];
+    private static int[] bytesToCodes(byte[] inputBytes) {
+        int[] codes = new int[inputBytes.length / 2];
         int j = 0;
         for (int i = 0; i < inputBytes.length - 1; i += 2) {
             byte first = inputBytes[i];
             byte second = inputBytes[i + 1];
             int result = ((first & 0xFF) << 8) | (second & 0xFF);
-            codes[j] = new Codeword(result, CODE_LENGTH);
+            codes[j] = result;
             j++;
         }
         return codes;
@@ -144,11 +143,11 @@ public class LZW {
     public static byte[] decode(byte[] inputBytes) {
 
         // parse codewords used from the input
-        Codeword[] input = bytesToCodes(inputBytes);
+        int[] input = bytesToCodes(inputBytes);
 
         // create initial dictionary since
         // we know what was used in encoding
-        HashMap<Codeword, ByteList> dictionary = initDecodeDict();
+        ByteList[] dictionary = initDecodeDict();
         int nextCode = 256;
 
         ByteList output = new ByteList();
@@ -156,22 +155,22 @@ public class LZW {
         // Handle first code by hand
         // to init oldCode
 
-        Codeword oldCode = input[0];
-        ByteList nextOutput = dictionary.get(oldCode);
+        int oldCode = input[0];
+        ByteList nextOutput = dictionary[oldCode];
         output.addAll(nextOutput);
 
 
         for (int i = 1; i < input.length; i++) {
-            Codeword newCode = input[i];
+            int newCode = input[i];
 
             // if in dict all is good
-            if (dictionary.containsKey(newCode)) {
-                nextOutput = dictionary.get(newCode);
+            if (dictionary[newCode] != null) {
+                nextOutput = dictionary[newCode];
             } else {
                 // Codeword wasn't in dict so it must
                 // be
                 nextOutput = new ByteList();
-                ByteList temp = dictionary.get(oldCode);
+                ByteList temp = dictionary[oldCode];
                 nextOutput.addAll(temp);
                 nextOutput.add(temp.get(0));
 
@@ -179,14 +178,14 @@ public class LZW {
             output.addAll(nextOutput);
 
             ByteList newDictEntry = new ByteList();
-            newDictEntry.addAll(dictionary.get(oldCode));
+            newDictEntry.addAll(dictionary[oldCode]);
             newDictEntry.add(nextOutput.get(0));
-            if (dictionary.size() == MAX_CODES) {
+            if (nextCode == MAX_CODES) {
                 dictionary = initDecodeDict();
                 nextCode = 256;
             }
 
-            dictionary.put(new Codeword(nextCode, CODE_LENGTH), newDictEntry);
+            dictionary[nextCode] = newDictEntry;
             nextCode++;
 
             oldCode = newCode;
