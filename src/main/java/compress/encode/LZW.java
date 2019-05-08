@@ -39,9 +39,7 @@ public class LZW {
             // if in dict, try a longer string of bytes
             if (!dictionary.contains(current)) {
                 // if not in  dict, add to dict and
-                ByteList newKey = new ByteList(current.size());
-                newKey.addAll(current);
-                dictionary.put(newKey, new Codeword(nextCode, CODE_LENGTH));
+                dictionary.put(current, new Codeword(nextCode, CODE_LENGTH));
                 nextCode++;
                 // remove the last byte before writing
                 current.remove();
@@ -49,7 +47,7 @@ public class LZW {
                 writeCodeword(dictionary.get(current), outputBytes);
                 // start new string from the last byte that
                 // wasn't added.
-                ByteList newlist = new ByteList(10);
+                ByteList newlist = new ByteList(3);
                 newlist.add(next);
                 current = newlist;
                 // reset dict if full
