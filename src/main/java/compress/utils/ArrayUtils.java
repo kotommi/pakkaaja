@@ -10,9 +10,9 @@ public final class ArrayUtils {
      * @param arr array of bytes
      * @return - an array where for byte b: array[b] is its frequency/count.
      */
-    public static long[] getFreqs(byte[] arr) {
+    public static int[] getFreqs(byte[] arr) {
 
-        final long[] freqs = new long[BYTE_VALUES];
+        final int[] freqs = new int[BYTE_VALUES];
         for (byte b : arr) {
             int i = (int) b + OFFSET;
             freqs[i]++;
@@ -27,10 +27,10 @@ public final class ArrayUtils {
      * @param array array of random long values
      * @return count of indexes with nonzero value.
      */
-    public static int nonZeroes(long[] array) {
+    public static int nonZeroes(int[] array) {
         int count = 0;
-        for (long l : array) {
-            if (l != 0) {
+        for (int i : array) {
+            if (i != 0) {
                 count++;
             }
         }

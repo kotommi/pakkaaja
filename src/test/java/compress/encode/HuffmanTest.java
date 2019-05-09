@@ -18,7 +18,7 @@ public class HuffmanTest {
 
     private final static int OFF = 128;
 
-    private final long[] freqs = ArrayUtils.getFreqs(stringBytes);
+    private final int[] freqs = ArrayUtils.getFreqs(stringBytes);
 
 
     @Test

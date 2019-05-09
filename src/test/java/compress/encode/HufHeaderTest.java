@@ -84,7 +84,7 @@ public class HufHeaderTest {
     }
 
     private byte[] buildHeader(byte[] originalBytes) {
-        final long[] freqs = ArrayUtils.getFreqs(originalBytes);
+        final int[] freqs = ArrayUtils.getFreqs(originalBytes);
         TreeNode[] treeNodes = Huffman.buildNodes(freqs);
         TreeNode root = Huffman.buildTree(treeNodes);
         this.originalRoot = root;

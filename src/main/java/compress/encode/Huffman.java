@@ -35,7 +35,7 @@ public class Huffman {
      * @param freqs count of occurences for each byte
      * @return an array of TreeNodes
      */
-    public static TreeNode[] buildNodes(long[] freqs) {
+    public static TreeNode[] buildNodes(int[] freqs) {
         final int size = ArrayUtils.nonZeroes(freqs);
         final TreeNode[] treeNodes = new TreeNode[size];
         int j = 0;

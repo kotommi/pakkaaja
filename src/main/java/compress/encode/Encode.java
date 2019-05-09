@@ -11,7 +11,7 @@ public class Encode {
 
     public static byte[] encodeHuffman(byte[] fileBytes) {
         //build tree
-        final long[] freqs = ArrayUtils.getFreqs(fileBytes);
+        final int[] freqs = ArrayUtils.getFreqs(fileBytes);
         final TreeNode[] treeNodes = Huffman.buildNodes(freqs);
         final TreeNode treeRoot = Huffman.buildTree(treeNodes);
         // encode header
