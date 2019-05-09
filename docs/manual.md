@@ -1,4 +1,22 @@
 ## Käyttöohje
+
+#### Käyttö
+```
+compress: java -jar pakkaja.jar -c huf/lzw text.txt
+extract: java -jar pakkaaja.jar -x huf/lzw text.txt.huf/lzw
+```
+Mahdollisesti puuttuvat suoritusoikeudet
+```
+chmod u+x pakkaaja.jar
+```
+Esimerkkejä: 
+```
+java -jar pakkaaja.jar -c huf teksti.txt
+java -jar pakkaaja.jar -x huf teksti.huf
+java -jar pakkaaja.jar -c lzw teksti.txt
+java -jar pakkaaja.jar -x lzw teksti.lzw
+```
+
 #### Projektin rakennus:
 ```
 ./gradlew build
@@ -14,25 +32,3 @@ sourceCompatibility = 1.11
 ```
 esim ```sourceCompatibility = 1.8``` openjdk-8:lle.
 
-#### Käyttö
-```
-compress: ./gradlew run --args="-c text.txt"
-extract/decompress: ./gradlew run --args="-x text.txt.huf"
-```
-tai
-```
-compress: java -jar name.jar -c text.txt
-extract/decompress: java -jar name.jar -x text.txt.huf
-```
-
-
-
-Pakattua tiedostokokoa voi tutkia vaikka komennolla
-```
-ls -lhS
-```   
-
-Sen että tiedosto on pysynyt samana pakkaamisen ja purkamisen jälkeen voi tarkistaa komennolla:
-```
-diff -s original.file extracted.file
-```
