@@ -5,8 +5,6 @@ import compress.domain.TreeNode;
 import compress.utils.ArrayUtils;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import static org.junit.Assert.*;
 
 public class HuffmanTest {
@@ -28,20 +26,18 @@ public class HuffmanTest {
 
         final TreeNode[] treeNodes = Huffman.buildNodes(freqs);
         assertEquals(3, treeNodes.length);
-        Arrays.sort(treeNodes);
 
-        TreeNode tn1 = treeNodes[0];
-        assertEquals(1, tn1.getCount());
-        assertEquals(C, tn1.getId());
+        TreeNode tn3 = treeNodes[0];
+        assertEquals(3, tn3.getCount());
+        assertEquals(A, tn3.getId());
 
         TreeNode tn2 = treeNodes[1];
         assertEquals(2, tn2.getCount());
         assertEquals(B, tn2.getId());
 
-        TreeNode tn3 = treeNodes[2];
-        assertEquals(3, tn3.getCount());
-        assertEquals(A, tn3.getId());
-
+        TreeNode tn1 = treeNodes[2];
+        assertEquals(1, tn1.getCount());
+        assertEquals(C, tn1.getId());
     }
 
     @Test
@@ -54,7 +50,7 @@ public class HuffmanTest {
                   B   C
          */
         final TreeNode treeRoot = Huffman.buildTree(Huffman.buildNodes(freqs));
-        assertEquals(false, treeRoot.isLeaf());
+        assertFalse(treeRoot.isLeaf());
         assertEquals(A, treeRoot.getLeft().getId());
         assertEquals(B, treeRoot.getRight().getLeft().getId());
         assertEquals(C, treeRoot.getRight().getRight().getId());

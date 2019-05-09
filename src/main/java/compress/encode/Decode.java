@@ -4,6 +4,9 @@ import compress.domain.HeaderReader;
 import compress.domain.TreeNode;
 import compress.utils.ArrayUtils;
 
+/**
+ * Wrapper from decompressing byte arrays.
+ */
 public class Decode {
 
     public static byte[] decodeHuffman(byte[] encodedBytes) {

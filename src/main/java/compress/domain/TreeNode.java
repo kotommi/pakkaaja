@@ -3,7 +3,7 @@ package compress.domain;
 /**
  * Object reference-style binary tree for Huffman-code generation.
  */
-public class TreeNode implements Comparable<TreeNode> {
+public class TreeNode {
 
     //the byte this node represents
     private byte id;
@@ -13,6 +13,12 @@ public class TreeNode implements Comparable<TreeNode> {
     private TreeNode left;
     private TreeNode right;
 
+    /**
+     * Creates new treenode.
+     *
+     * @param count the amount of id bytes
+     * @param id    byte-value of the node
+     */
     public TreeNode(long count, byte id) {
         this.id = id;
         this.count = count;
@@ -37,24 +43,11 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     /**
-     * Recursive depth-method.
+     * Gets recursively the amount of leaves in the tree.
+     * Used in creating a header for huffmantree.
      *
-     * @return depth of tree. root = depth 0.
+     * @return Amount of leaves.
      */
-    public int getDepth() {
-        if (this.isLeaf()) {
-            return 0;
-        }
-        return 1 + Math.max(this.left.getDepth(), this.right.getDepth());
-    }
-
-    public int getTotalCount() {
-        if (this.isLeaf()) {
-            return (int) this.count;
-        }
-        return this.left.getTotalCount() + this.right.getTotalCount();
-    }
-
     public int getLeafCount() {
         if (this.isLeaf()) {
             return 1;
@@ -89,10 +82,5 @@ public class TreeNode implements Comparable<TreeNode> {
             s = s + "\n" + right.toString();
         }
         return s;
-    }
-
-    @Override
-    public int compareTo(TreeNode treeNode) {
-        return Long.compare(this.count, treeNode.count);
     }
 }

@@ -34,10 +34,10 @@ public class HufHeader {
     }
 
     /**
-     * Recursive
+     * Recursive encoding function in preorder-style.
      *
-     * @param node
-     * @param bytes
+     * @param node  Node to be encoded
+     * @param bytes Bytelist being mutated
      */
     private static void encodeTree(TreeNode node, ByteList bytes) {
         if (node == null) {
@@ -54,6 +54,12 @@ public class HufHeader {
 
     }
 
+    /**
+     * Initializes the recursive decodenode-function.
+     *
+     * @param headerReader Scanner that handles the read-state.
+     * @return Fully decoded Huffman-tree.
+     */
     public static TreeNode decodeTree(HeaderReader headerReader) {
         TreeNode root = new TreeNode(0, Byte.MIN_VALUE);
         decodeNode(root, headerReader);
