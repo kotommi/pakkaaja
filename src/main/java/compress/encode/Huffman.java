@@ -145,8 +145,10 @@ public class Huffman {
         // handle the last byte
         int last = bytes[bytes.length - 1] + offset;
         int used = bytes[0];
+        System.out.println("used: " + used);
         for (int j = used; j > 0; j--) {
             int bit = (last >> j) & 1;
+            System.out.print(bit);
             current = bit == 0 ? current.getLeft() : current.getRight();
             if (current.isLeaf()) {
                 decodedBytes.add(current.getId());
@@ -190,13 +192,18 @@ public class Huffman {
                 }
             }
         }
-        //add the last byte
-        encodedBytes.add((byte) ((currentByte + offset)));
-
-        //set the header byte to used bits in the last byte
-        encodedBytes.set(0, (byte) bitIndex);
-
-
+        // if all bits are used add a dummy byte in the end
+        // and write 0 in front.
+        if (bitIndex == 8) {
+            encodedBytes.add((byte) ((currentByte + offset)));
+            encodedBytes.add((byte) 0);
+            encodedBytes.set(0, (byte) 0);
+        } else {
+            //add the last byte
+            encodedBytes.add((byte) ((currentByte + offset)));
+            //set the header byte to used bits in the last byte
+            encodedBytes.set(0, (byte) bitIndex);
+        }
         return encodedBytes.toArray();
     }
 

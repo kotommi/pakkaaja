@@ -23,6 +23,10 @@ public class IntegrationTest {
         final String pdfFile = "testi.pdf";
         testFile(pdfFile);
 
+        // bugged file from issue #2 in gh
+        final String bugiFile = "bugi.txt";
+        testFile(bugiFile);
+
     }
 
     private void testFile(String filename) throws IOException {
@@ -47,6 +51,7 @@ public class IntegrationTest {
         final byte[] lzwEncoded = LZW.encode(originalFileBytes);
         finish = System.currentTimeMillis();
         diff = finish - start;
+        diff = diff == 0 ? 1 : diff;
         System.out.println("LZW encode took " + diff + " ms");
         System.out.println("speed: " + originalFileBytes.length / diff + " bytes / ms");
         System.out.println("LZW length: " + lzwEncoded.length + " bytes");
