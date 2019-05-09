@@ -22,7 +22,7 @@ public class Codeword {
         this.index = 0;
     }
 
-    public Codeword(int bits, int index) {
+    private Codeword(int bits, int index) {
         this.bits = bits;
         this.index = index;
     }
@@ -40,7 +40,7 @@ public class Codeword {
             throw new IndexOutOfBoundsException();
         }
         //shift right i positions and & the bit value
-        int bit = bits >> i & 1;
+        final int bit = bits >> i & 1;
         return bit == 1;
     }
 
@@ -90,32 +90,4 @@ public class Codeword {
         return index == 0 ? "" : Integer.toBinaryString(bits);
     }
 
-    public int getIntValue() {
-        return this.bits;
-    }
-
-
-    /**
-     * Standard equals method. Checks for class and contents.
-     *
-     * @param o Object to compare with
-     * @return true if both objects' contents are the same
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final Codeword codeword = (Codeword) o;
-        return index == codeword.index
-                && bits == codeword.bits;
-    }
-
-    @Override
-    public int hashCode() {
-        return 7 * index * 31 * bits;
-    }
 }

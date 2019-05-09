@@ -113,16 +113,4 @@ public class ByteListTest {
         }
     }
 
-    @Test
-    public void hashCodeTest() {
-        ByteList eka = new ByteList();
-        eka.add((byte) 97);
-
-        byte[] arr = {97};
-        ByteList toka = new ByteList(arr);
-
-        assertEquals(eka.hashCode(), toka.hashCode());
-    }
-
-
 }

@@ -27,7 +27,7 @@ public class TrieNode {
     public void put(ByteList bytes, int code) {
         TrieNode current = this;
         for (int i = 0; i < bytes.size(); i++) {
-            int byteIndex = bytes.get(i) + 128;
+            final int byteIndex = bytes.get(i) + 128;
             // don't reset the child node if it already exists
             if (current.children[byteIndex] == null) {
                 TrieNode newNode = new TrieNode();
@@ -52,8 +52,8 @@ public class TrieNode {
     public int get(ByteList bytes) {
         TrieNode current = this;
         for (int i = 0; i < bytes.size(); i++) {
-            int byteIndex = bytes.get(i) + 128;
-            TrieNode child = current.children[byteIndex];
+            final int byteIndex = bytes.get(i) + 128;
+            final TrieNode child = current.children[byteIndex];
             // Terminate search as early as possible
             if (child == null) {
                 return -1;

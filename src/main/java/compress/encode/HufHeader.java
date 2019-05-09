@@ -21,7 +21,7 @@ public class HufHeader {
     private static byte LEAF = 1;
 
     public static byte[] encodeTree(TreeNode root) {
-        ByteList bytes = new ByteList();
+        final ByteList bytes = new ByteList();
         // mark how many leafNodes to expect.
         // Do some scaling to make the int to byte conversion.
         int leafCount = root.getLeafCount() - 1;
@@ -61,7 +61,7 @@ public class HufHeader {
      * @return Fully decoded Huffman-tree.
      */
     public static TreeNode decodeTree(HeaderReader headerReader) {
-        TreeNode root = new TreeNode(0, Byte.MIN_VALUE);
+        final TreeNode root = new TreeNode(0, Byte.MIN_VALUE);
         decodeNode(root, headerReader);
 
         return root;
@@ -69,14 +69,14 @@ public class HufHeader {
 
     private static void decodeNode(TreeNode node, HeaderReader headerReader) {
         if (headerReader.hasNext()) {
-            byte type = headerReader.getType();
+            final byte type = headerReader.getType();
             if (type == EMPTY) {
                 node.setLeft(new TreeNode(0, Byte.MIN_VALUE));
                 node.setRight(new TreeNode(0, Byte.MIN_VALUE));
                 decodeNode(node.getLeft(), headerReader);
                 decodeNode(node.getRight(), headerReader);
             } else if (type == LEAF) {
-                byte value = headerReader.getValue();
+                final byte value = headerReader.getValue();
                 node.setId(value);
             } else {
                 throw new IllegalArgumentException(

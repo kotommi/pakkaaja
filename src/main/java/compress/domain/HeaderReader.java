@@ -41,7 +41,7 @@ public class HeaderReader {
      * @see compress.encode.HufHeader
      */
     public byte getType() {
-        byte b = arr[i];
+        final byte b = arr[i];
         i++;
         if (b == 1) {
             leaves--;
@@ -56,7 +56,7 @@ public class HeaderReader {
      * @see compress.encode.HufHeader
      */
     public byte getValue() {
-        byte b = arr[i];
+        final byte b = arr[i];
         i++;
 
         return b;

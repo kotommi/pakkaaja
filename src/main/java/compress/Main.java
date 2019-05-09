@@ -17,13 +17,12 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
 
-        //System.out.println(Arrays.toString(args));
         if (args.length == 0) {
             System.out.println("No arguments given");
             System.out.println("Usage: -[c/x/h] [huf/lzw] filename");
             return;
         }
-        String mode = args[0];
+        final String mode = args[0];
         if (mode.charAt(0) != '-') {
             throw new IllegalArgumentException("first argument must be mode [-c/-x/-h]");
         }
@@ -32,7 +31,6 @@ public class Main {
 
         final String filename = args[2];
         final byte[] fileBytes = FileUtils.readFile(filename);
-
 
         switch (mode) {
             case "-c":
@@ -74,7 +72,8 @@ public class Main {
     }
 
     private static void extractFile(byte[] fileBytes, String filename, String algo) {
-        System.out.println("Decompressing " + filename + ", compressed size " + fileBytes.length + " bytes.");
+        System.out.println("Decompressing " + filename + ", compressed size "
+                + fileBytes.length + " bytes.");
         String slicedName = filename.substring(0, filename.length() - 4);
         int decompressedBytes = 0;
         switch (algo) {
@@ -91,7 +90,8 @@ public class Main {
             default:
                 System.out.println("No algorithm selected\n Choose huf or lzw");
         }
-        System.out.println("Decompressed file to " + slicedName + ", decompressed size " + decompressedBytes + " bytes");
+        System.out.println("Decompressed file to " + slicedName
+                + ", decompressed size " + decompressedBytes + " bytes");
     }
 
 }

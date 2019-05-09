@@ -28,7 +28,6 @@ public class ByteList {
 
     /**
      * Copies the parameter array as initial contents of the list.
-     * Pure
      *
      * @param initialBytes initial bytes for the list.
      */
@@ -101,7 +100,7 @@ public class ByteList {
      * and other commonly used implementations
      */
     private void resize() {
-        int newLength = (int) (bytes.length * 1.5) + 1;
+        final int newLength = (int) (bytes.length * 1.5) + 1;
         byte[] newBytes = new byte[newLength];
         for (int i = 0; i < bytes.length; i++) {
             newBytes[i] = bytes[i];
@@ -139,45 +138,14 @@ public class ByteList {
         this.size = 0;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ByteList byteList = (ByteList) o;
-        return size == byteList.size &&
-                contentsEqual(bytes, byteList.bytes, this.size);
-    }
-
-    private boolean contentsEqual(byte[] first, byte[] second, int size) {
-        for (int i = 0; i < size; i++) {
-            if (first[i] != second[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    /**
+     * "Removes" the last byte of the list.
+     */
     public void remove() {
-        if (this.bytes.length == 0) {
-            throw new IndexOutOfBoundsException("Tried to remove 0th element");
+        if (this.size == 0) {
+            throw new IndexOutOfBoundsException("Tried to remove from empty list");
         }
         this.size--;
-    }
-
-    /**
-     * int hashCode = 1;
-     * for (E e : list)
-     * hashCode = 31*hashCode + (e==null ? 0 : e.hashCode());
-     *
-     * @return hashcode
-     */
-    @Override
-    public int hashCode() {
-        int result = size * 11;
-        for (int i = 0; i < size; i++) {
-            result = result * 61 + bytes[i];
-        }
-        return result;
     }
 
     @Override
@@ -189,8 +157,6 @@ public class ByteList {
                 s += ", ";
             }
         }
-
-
         return s;
     }
 }

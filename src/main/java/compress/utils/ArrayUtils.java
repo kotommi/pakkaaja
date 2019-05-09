@@ -45,7 +45,7 @@ public final class ArrayUtils {
      * @return Concatenated array first+second.
      */
     public static byte[] concat(byte[] first, byte[] second) {
-        int total = first.length + second.length;
+        final int total = first.length + second.length;
         final byte[] result = new byte[total];
         int i;
         for (i = 0; i < first.length; i++) {
@@ -67,7 +67,7 @@ public final class ArrayUtils {
      * @return Subarray arr[from]...arr[to]
      */
     public static byte[] slice(byte[] bytes, int fromIndex, int toIndex) {
-        byte[] result = new byte[toIndex - fromIndex];
+        final byte[] result = new byte[toIndex - fromIndex];
         for (int i = fromIndex; i < toIndex; i++) {
             result[i - fromIndex] = bytes[i];
         }

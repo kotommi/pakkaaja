@@ -22,7 +22,7 @@ public class LZW {
         TrieNode dictionary = initEncodeDict();
         int nextCode = 256;
 
-        ByteList outputBytes = new ByteList(inputBytes.length / 2);
+        final ByteList outputBytes = new ByteList(inputBytes.length / 2);
 
         ByteList current = new ByteList(3);
         current.add(inputBytes[0]);
@@ -44,7 +44,7 @@ public class LZW {
                 writeCodeword(dictionary.get(current), outputBytes);
                 // start new string from the last byte that
                 // wasn't added.
-                ByteList newlist = new ByteList(3);
+                final ByteList newlist = new ByteList(3);
                 newlist.add(next);
                 current = newlist;
                 // reset dict if full
@@ -68,7 +68,7 @@ public class LZW {
      * @return Initial dictionary for encoding.
      */
     private static TrieNode initEncodeDict() {
-        TrieNode trieRoot = new TrieNode();
+        final TrieNode trieRoot = new TrieNode();
         for (int i = 0; i <= 255; i++) {
             // shift the int to byte range
             byte[] b = {(byte) (i - 128)};
@@ -85,8 +85,8 @@ public class LZW {
      * @param output List being written to.
      */
     private static void writeCodeword(int code, ByteList output) {
-        byte first = (byte) ((code >> 8) & 0xFF);
-        byte second = (byte) (code & 0xFF);
+        final byte first = (byte) ((code >> 8) & 0xFF);
+        final byte second = (byte) (code & 0xFF);
         output.addAll(first, second);
     }
 
@@ -98,10 +98,10 @@ public class LZW {
      * @return Initial dictionary for decoding.
      */
     private static ByteList[] initDecodeDict() {
-        ByteList[] dictionary = new ByteList[MAX_CODES];
+        final ByteList[] dictionary = new ByteList[MAX_CODES];
         for (int i = 0; i <= 255; i++) {
             // shift the int to byte range
-            byte[] b = {(byte) (i - 128)};
+            final byte[] b = {(byte) (i - 128)};
             dictionary[i] = new ByteList(b);
         }
         return dictionary;
@@ -116,17 +116,16 @@ public class LZW {
      * @return Array of codewords used in original order.
      */
     private static int[] bytesToCodes(byte[] inputBytes) {
-        int[] codes = new int[inputBytes.length / 2];
+        final int[] codes = new int[inputBytes.length / 2];
         int j = 0;
         for (int i = 0; i < inputBytes.length - 1; i += 2) {
-            byte first = inputBytes[i];
-            byte second = inputBytes[i + 1];
-            int result = ((first & 0xFF) << 8) | (second & 0xFF);
+            final byte first = inputBytes[i];
+            final byte second = inputBytes[i + 1];
+            final int result = ((first & 0xFF) << 8) | (second & 0xFF);
             codes[j] = result;
             j++;
         }
         return codes;
-
     }
 
     /**
@@ -138,7 +137,7 @@ public class LZW {
     public static byte[] decode(byte[] inputBytes) {
 
         // parse codewords used from the input
-        int[] input = bytesToCodes(inputBytes);
+        final int[] input = bytesToCodes(inputBytes);
 
         // create initial dictionary since
         // we know what was used in encoding.
@@ -147,7 +146,7 @@ public class LZW {
         // when to reset dictionary.
         int nextCode = 256;
 
-        ByteList output = new ByteList();
+        final ByteList output = new ByteList();
 
         // Handle first code by hand
         // to init oldCode
@@ -174,7 +173,7 @@ public class LZW {
             }
             output.addAll(nextOutput);
 
-            ByteList newDictEntry = new ByteList();
+            final ByteList newDictEntry = new ByteList();
             newDictEntry.addAll(dictionary[oldCode]);
             newDictEntry.add(nextOutput.get(0));
             if (nextCode == MAX_CODES) {
@@ -187,7 +186,6 @@ public class LZW {
 
             oldCode = newCode;
         }
-
         return output.toArray();
     }
 
