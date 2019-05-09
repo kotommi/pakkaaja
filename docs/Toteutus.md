@@ -1,8 +1,5 @@
 ## Toteutusdokumentti
 
-WIP
- 
-
 #### Huffman
 Ohjelma toteuttaa Huffman-koodauksen jonka perusidea on korvata useasti syötteessä esiintyvät merkit lyhyillä bittijonoilla ja kasvattaa bittijonon pituutta aina harvinaisimmille merkeille. 
 Merkit ovat ohjelman tapauksessa tavuja ja ohjelma pystyy pakkaamaan myös tiedostot jotka eivät ole pelkkää tekstiä.
@@ -20,10 +17,19 @@ Oliomaista Javaa on ehkä tavallista vähemmän ja sitä on käytetty lähinnä 
 Ohjelman flow menee suurinpiirtein näin:
 1. parsi komentoriviargumentit
 2. lue syötetiedosto tavutaulukoksi muistiin
-3. kirjoita/lue otsake
+3. kirjoita/lue otsake (Huffman)
 4. pakkaa/pura itse data
 5. kirjoita se uuteen tiedostoon
 
-#### Riippuvuudet
+#### Suorituskyky- ja O-analyysivertailu
+Ks. testaus.md
+
+#### Riippuvuudet/Ei itse toteutetut asiat
 Käytän ohjelmassa Googlen Guava-kirjastoa tiedostojen lukemiseen ja kirjoittamiseen. 
-Se on wrapatty luokassa FileUtils.
+Se on wrapatty luokassa FileUtils. Lisäksi testit käyttävät mm. Javan Arrays-luokkaa tulosten varmistamiseen. 
+
+#### Puutteet/parannusehdotukset
+* Isoin parannus olisi kirjoittaa LZW-algoritmi käyttämään vaihtelevan pituisia koodisanoja.
+* Huffman-otsakkeen lyhentäminen muuttamalla tyyppiä ilmaisevat tavut yksittäisiksi biteksi.
+* Voisi ylipäätään eristää bittien kirjoituksen tavuiksi johonkin luokkaan.
+* Parempi käli
