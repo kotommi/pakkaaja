@@ -1,13 +1,13 @@
 # Pakkaaja
 
-Käyttö:
-```
-compress: ./gradlew run --args="-c huf/lzw text.txt"
-extract: ./gradlew run --args="-x huf/lzw text.txt.huf/lzw"
-```
-
 ## Dokumentaatio
 [Määrittely](https://github.com/kotommi/pakkaaja/blob/master/docs/M%C3%A4%C3%A4rittely.md)
+
+[Toteutus](https://github.com/kotommi/pakkaaja/blob/master/docs/Toteutus.md)
+
+[Testaus](https://github.com/kotommi/pakkaaja/blob/master/docs/Testaus.md)
+
+[Käyttöohje](https://github.com/kotommi/pakkaaja/blob/master/docs/manual.md)
 
 
 Viikkoraportit:

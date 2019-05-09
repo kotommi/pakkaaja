@@ -32,7 +32,7 @@ public class IntegrationTest {
     @Test
     public void testRandomData() {
         for (int i = 0; i < 100; i++) {
-            final Random random = new Random();
+            final Random random = new Random(0xDEADBEEF);
             final byte[] bytes = new byte[1000];
             random.nextBytes(bytes);
 
