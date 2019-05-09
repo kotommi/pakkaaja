@@ -8,7 +8,7 @@ public class TreeNode {
     //the byte this node represents
     private byte id;
     // weight of this node or the nodes below this
-    private long count;
+    private int count;
     //either both are null or defined
     private TreeNode left;
     private TreeNode right;
@@ -19,7 +19,7 @@ public class TreeNode {
      * @param count the amount of id bytes
      * @param id    byte-value of the node
      */
-    public TreeNode(long count, byte id) {
+    public TreeNode(int count, byte id) {
         this.id = id;
         this.count = count;
         this.left = null;
@@ -30,7 +30,7 @@ public class TreeNode {
         return id;
     }
 
-    public long getCount() {
+    public int getCount() {
         return count;
     }
 

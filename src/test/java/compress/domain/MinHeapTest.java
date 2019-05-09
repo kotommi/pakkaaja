@@ -14,7 +14,7 @@ public class MinHeapTest {
         final int amount = 10;
         TreeNode[] nodes = new TreeNode[amount];
         for (int i = 0; i < amount; i++) {
-            nodes[i] = new TreeNode((long) amount - i, (byte) i);
+            nodes[i] = new TreeNode(amount - i, (byte) i);
         }
         heap = new MinHeap();
         heap.addAll(nodes);
@@ -34,13 +34,13 @@ public class MinHeapTest {
     @Test
     public void addingTest() {
         //smallest value goes to the front
-        long smallvalue = -1;
+        int smallvalue = -1;
         heap.add(new TreeNode(smallvalue, Byte.MIN_VALUE));
         TreeNode polled = heap.poll();
         assertEquals(smallvalue, polled.getCount());
         assertEquals(Byte.MIN_VALUE, polled.getId());
         //biggest value goes to the back
-        long bigvalue = 999;
+        int bigvalue = 999;
         heap.add(new TreeNode(bigvalue, Byte.MAX_VALUE));
         while (heap.size() > 0) {
             polled = heap.poll();
