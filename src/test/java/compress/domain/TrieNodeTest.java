@@ -23,6 +23,12 @@ public class TrieNodeTest {
             assertEquals(i, code);
         }
 
+        // failcase
+        byte[] bytes = {97, 98, 99};
+        ByteList bl = new ByteList();
+        bl.addAll(bytes);
+        assertEquals(-1, trieRoot.get(bl));
+
     }
 
     @Test
