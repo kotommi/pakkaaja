@@ -26,5 +26,7 @@ Käytetyt tiedostot:
 Kaikki tiedostot ovat tekstiä. Lisäksi E.coli-tiedosto on hyvin toisteista pienellä aakkostolla.
 
 #### Suoritusnopeuden ja aikavaativuuden testaaminen
-Otin satunnaista dataa testin toteutuksessa komennolla ```dd if=/dev/urandom of="$i"mfile bs=1M count=$i``` ja mittasin aikaa time-ohjelmalla. 
-![Huffman pakkaus](docs/kuvat/huf_pak.png)
+Otin satunnaista dataa testin toteutuksessa komennolla ```dd if=/dev/urandom of="$i"mfile bs=1M count=$i``` ja mittasin aikaa time-ohjelmalla.
+
+
+![Huffman pakkaus](kuvat/huf_pak.png)
