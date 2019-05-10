@@ -15,6 +15,9 @@ Toteutetut algoritmit: Huffman, LZW
 
 [Käyttöohje](https://github.com/kotommi/pakkaaja/blob/master/docs/manual.md)
 
+[Javadoc](docs/javadoc/index-all.html)
+
+[Testikattavuus](docs/jacoco/index.html)
 
 Viikkoraportit:
 *  [Viikko 1](https://github.com/kotommi/pakkaaja/blob/master/docs/viikkoraportit/viikko1.md)

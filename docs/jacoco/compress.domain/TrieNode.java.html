@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrieNode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.domain</a> &gt; <span class="el_source">TrieNode.java</span></div><h1>TrieNode.java</h1><pre class="source lang-java linenums">package compress.domain;
+
+/**
+ * Trie data structure for fast-ish searching.
+ * Used for LZW-compression.
+ */
+public class TrieNode {
+    private TrieNode[] children;
+    private int code;
+
+    /**
+     * Creates new node with no children and code as -1 == no code.
+     */
+<span class="fc" id="L14">    public TrieNode() {</span>
+<span class="fc" id="L15">        this.children = new TrieNode[256];</span>
+<span class="fc" id="L16">        this.code = -1;</span>
+<span class="fc" id="L17">    }</span>
+
+    /**
+     * Adds a code to the end of the chain of bytes
+     * in bytelist.
+     * arr[0]-&gt;arr[1]-&gt;arr[2]-&gt;code
+     *
+     * @param bytes Trie-node chain to follow.
+     * @param code  Code being added.
+     */
+    public void put(ByteList bytes, int code) {
+<span class="fc" id="L28">        TrieNode current = this;</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (int i = 0; i &lt; bytes.size(); i++) {</span>
+<span class="fc" id="L30">            final int byteIndex = bytes.get(i) + 128;</span>
+            // don't reset the child node if it already exists
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            if (current.children[byteIndex] == null) {</span>
+<span class="fc" id="L33">                TrieNode newNode = new TrieNode();</span>
+<span class="fc" id="L34">                current.children[byteIndex] = newNode;</span>
+<span class="fc" id="L35">                current = newNode;</span>
+<span class="fc" id="L36">            } else {</span>
+<span class="fc" id="L37">                current = current.children[byteIndex];</span>
+            }
+
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            if (i == bytes.size() - 1) {</span>
+<span class="fc" id="L41">                current.code = code;</span>
+            }
+        }
+<span class="fc" id="L44">    }</span>
+
+    /**
+     * Finds a code at the end of bytechain.
+     *
+     * @param bytes Bytechain to follow.
+     * @return Code at the end of bytechain. -1 if not found.
+     */
+    public int get(ByteList bytes) {
+<span class="fc" id="L53">        TrieNode current = this;</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        for (int i = 0; i &lt; bytes.size(); i++) {</span>
+<span class="fc" id="L55">            final int byteIndex = bytes.get(i) + 128;</span>
+<span class="fc" id="L56">            final TrieNode child = current.children[byteIndex];</span>
+            // Terminate search as early as possible
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if (child == null) {</span>
+<span class="fc" id="L59">                return -1;</span>
+            }
+<span class="fc" id="L61">            current = child;</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (i == bytes.size() - 1) {</span>
+<span class="fc" id="L63">                return current.code;</span>
+            }
+        }
+<span class="nc" id="L66">        return -1;</span>
+    }
+
+    /**
+     * Convenience wrapper for readability.
+     *
+     * @param bytes chain to follow
+     * @return true if already in trie, false otherwise.
+     */
+    public boolean contains(ByteList bytes) {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        return this.get(bytes) != -1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

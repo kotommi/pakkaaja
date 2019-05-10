@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Encode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.encode</a> &gt; <span class="el_source">Encode.java</span></div><h1>Encode.java</h1><pre class="source lang-java linenums">package compress.encode;
+
+import compress.domain.Codeword;
+import compress.domain.TreeNode;
+import compress.utils.ArrayUtils;
+
+/**
+ * Wrapper class for encoding functions.
+ */
+<span class="nc" id="L10">public class Encode {</span>
+
+    public static byte[] encodeHuffman(byte[] fileBytes) {
+        //build tree
+<span class="fc" id="L14">        final int[] freqs = ArrayUtils.getFreqs(fileBytes);</span>
+<span class="fc" id="L15">        final TreeNode[] treeNodes = Huffman.buildNodes(freqs);</span>
+<span class="fc" id="L16">        final TreeNode treeRoot = Huffman.buildTree(treeNodes);</span>
+        // encode header
+<span class="fc" id="L18">        final byte[] headerBytes = HufHeader.encodeTree(treeRoot);</span>
+        // encode data
+<span class="fc" id="L20">        final Codeword[] lookupTable = Huffman.buildLookupTable(treeRoot);</span>
+<span class="fc" id="L21">        final byte[] dataBytes = Huffman.encodeData(fileBytes, lookupTable);</span>
+        // combine
+<span class="fc" id="L23">        final byte[] encodedBytes = ArrayUtils.concat(headerBytes, dataBytes);</span>
+
+<span class="fc" id="L25">        return encodedBytes;</span>
+    }
+
+    public static byte[] encodeLZW(byte[] fileBytes) {
+<span class="nc" id="L29">        return LZW.encode(fileBytes);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

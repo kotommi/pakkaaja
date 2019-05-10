@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ByteList.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.domain</a> &gt; <span class="el_source">ByteList.java</span></div><h1>ByteList.java</h1><pre class="source lang-java linenums">package compress.domain;
+
+/**
+ * Dynamic byte-array for convenience purposes
+ */
+public class ByteList {
+    private byte[] bytes;
+    private int size;
+
+    /**
+     * Default constructor. Uses 256 as
+     * initial array size for no particular reason
+     */
+<span class="fc" id="L14">    public ByteList() {</span>
+<span class="fc" id="L15">        this.bytes = new byte[256];</span>
+<span class="fc" id="L16">        this.size = 0;</span>
+<span class="fc" id="L17">    }</span>
+
+    /**
+     * Create a List with initial array length
+     *
+     * @param initLength length of the array inside
+     */
+<span class="fc" id="L24">    public ByteList(int initLength) {</span>
+<span class="fc" id="L25">        this.bytes = new byte[initLength];</span>
+<span class="fc" id="L26">        this.size = 0;</span>
+<span class="fc" id="L27">    }</span>
+
+    /**
+     * Copies the parameter array as initial contents of the list.
+     *
+     * @param initialBytes initial bytes for the list.
+     */
+<span class="fc" id="L34">    public ByteList(byte... initialBytes) {</span>
+<span class="fc" id="L35">        this.bytes = new byte[initialBytes.length];</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        for (int i = 0; i &lt; initialBytes.length; i++) {</span>
+<span class="fc" id="L37">            this.bytes[i] = initialBytes[i];</span>
+        }
+<span class="fc" id="L39">        this.size = initialBytes.length;</span>
+<span class="fc" id="L40">    }</span>
+
+
+    /**
+     * Appends byte b to the list.
+     *
+     * @param b byte
+     */
+    public void add(byte b) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (this.size == bytes.length) {</span>
+<span class="fc" id="L50">            this.resize();</span>
+        }
+<span class="fc" id="L52">        bytes[size] = b;</span>
+<span class="fc" id="L53">        size++;</span>
+<span class="fc" id="L54">    }</span>
+
+
+    public void addAll(byte... bytes) {
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (byte b : bytes) {</span>
+<span class="fc" id="L59">            this.add(b);</span>
+        }
+<span class="fc" id="L61">    }</span>
+
+    public void addAll(ByteList bl) {
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (int i = 0; i &lt; bl.size(); i++) {</span>
+<span class="fc" id="L65">            this.add(bl.get(i));</span>
+        }
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * Get byte at index i
+     *
+     * @param i index
+     * @return byte
+     * @throws IndexOutOfBoundsException if i&gt;= size
+     */
+    public byte get(int i) {
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (i &gt;= size) {</span>
+<span class="fc" id="L78">            throw new IndexOutOfBoundsException(&quot;got: &quot; + i + &quot; size: &quot; + size);</span>
+        }
+<span class="fc" id="L80">        return bytes[i];</span>
+    }
+
+    /**
+     * Sets byte at index i to byte b.
+     *
+     * @param i index
+     * @param b byte to set
+     * @throws IndexOutOfBoundsException if i &gt;= size
+     */
+    public void set(int i, byte b) {
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (i &gt;= size) {</span>
+<span class="fc" id="L92">            throw new IndexOutOfBoundsException(&quot;got: &quot; + i + &quot; size: &quot; + size);</span>
+        }
+<span class="fc" id="L94">        bytes[i] = b;</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Resize the array that the list uses.
+     * Growth factor 3/2 stolen from arraylist
+     * and other commonly used implementations
+     */
+    private void resize() {
+<span class="fc" id="L103">        final int newLength = (int) (bytes.length * 1.5) + 1;</span>
+<span class="fc" id="L104">        byte[] newBytes = new byte[newLength];</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (int i = 0; i &lt; bytes.length; i++) {</span>
+<span class="fc" id="L106">            newBytes[i] = bytes[i];</span>
+        }
+<span class="fc" id="L108">        this.bytes = newBytes;</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Returns an array with elements of the list in order.
+     *
+     * @return Array with .length == size
+     */
+    public byte[] toArray() {
+<span class="fc" id="L117">        final byte[] ret = new byte[size];</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L119">            ret[i] = bytes[i];</span>
+        }
+<span class="fc" id="L121">        return ret;</span>
+    }
+
+    /**
+     * Returns the logical size of the list.
+     *
+     * @return amount of bytes in the list.
+     */
+    public int size() {
+<span class="fc" id="L130">        return size;</span>
+    }
+
+    /**
+     * Clears the list.
+     */
+    public void clear() {
+<span class="fc" id="L137">        this.bytes = new byte[256];</span>
+<span class="fc" id="L138">        this.size = 0;</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * &quot;Removes&quot; the last byte of the list.
+     */
+    public void remove() {
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        if (this.size == 0) {</span>
+<span class="nc" id="L146">            throw new IndexOutOfBoundsException(&quot;Tried to remove from empty list&quot;);</span>
+        }
+<span class="fc" id="L148">        this.size--;</span>
+<span class="fc" id="L149">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L153">        String s = &quot;&quot;;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L155">            s += bytes[i];</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (i &lt; size - 1) {</span>
+<span class="nc" id="L157">                s += &quot;, &quot;;</span>
+            }
+        }
+<span class="nc" id="L160">        return s;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

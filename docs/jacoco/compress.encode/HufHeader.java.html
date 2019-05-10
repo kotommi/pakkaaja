@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HufHeader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.encode</a> &gt; <span class="el_source">HufHeader.java</span></div><h1>HufHeader.java</h1><pre class="source lang-java linenums">package compress.encode;
+
+import compress.domain.ByteList;
+import compress.domain.HeaderReader;
+import compress.domain.TreeNode;
+
+/**
+ * Reads and writes headers for Huffman files.
+ * The header format is:
+ * [Leaf count, 1 byte]
+ * Then repeating: [Node type, 1 byte] [Node value, 1 byte, optional]
+ * Where leaf count is used to infer where the header ends,
+ * Node type is 1 for leaf node, 0 for parent,
+ * and leafnodes have a value following them.
+ * This could be improved to only use 1 bit for the node type.
+ */
+<span class="nc" id="L17">public class HufHeader {</span>
+
+<span class="fc" id="L19">    private static int OFF = 128;</span>
+<span class="fc" id="L20">    private static byte EMPTY = 0;</span>
+<span class="fc" id="L21">    private static byte LEAF = 1;</span>
+
+    public static byte[] encodeTree(TreeNode root) {
+<span class="fc" id="L24">        final ByteList bytes = new ByteList();</span>
+        // mark how many leafNodes to expect.
+        // Do some scaling to make the int to byte conversion.
+<span class="fc" id="L27">        int leafCount = root.getLeafCount() - 1;</span>
+<span class="fc" id="L28">        leafCount -= OFF;</span>
+<span class="fc" id="L29">        bytes.add((byte) leafCount);</span>
+
+        //recursively encode the tree
+<span class="fc" id="L32">        encodeTree(root, bytes);</span>
+<span class="fc" id="L33">        return bytes.toArray();</span>
+    }
+
+    /**
+     * Recursive encoding function in preorder-style.
+     *
+     * @param node  Node to be encoded
+     * @param bytes Bytelist being mutated
+     */
+    private static void encodeTree(TreeNode node, ByteList bytes) {
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        if (node == null) {</span>
+<span class="nc" id="L44">            throw new NullPointerException(&quot;something went wrong in the recursion&quot;);</span>
+        }
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (!node.isLeaf()) {</span>
+<span class="fc" id="L47">            bytes.add((byte) 0);</span>
+<span class="fc" id="L48">            encodeTree(node.getLeft(), bytes);</span>
+<span class="fc" id="L49">            encodeTree(node.getRight(), bytes);</span>
+        } else {
+<span class="fc" id="L51">            bytes.add((byte) 1);</span>
+<span class="fc" id="L52">            bytes.add(node.getId());</span>
+        }
+
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * Initializes the recursive decodenode-function.
+     *
+     * @param headerReader Scanner that handles the read-state.
+     * @return Fully decoded Huffman-tree.
+     */
+    public static TreeNode decodeTree(HeaderReader headerReader) {
+<span class="fc" id="L64">        final TreeNode root = new TreeNode(0, Byte.MIN_VALUE);</span>
+<span class="fc" id="L65">        decodeNode(root, headerReader);</span>
+
+<span class="fc" id="L67">        return root;</span>
+    }
+
+    private static void decodeNode(TreeNode node, HeaderReader headerReader) {
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (headerReader.hasNext()) {</span>
+<span class="fc" id="L72">            final byte type = headerReader.getType();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (type == EMPTY) {</span>
+<span class="fc" id="L74">                node.setLeft(new TreeNode(0, Byte.MIN_VALUE));</span>
+<span class="fc" id="L75">                node.setRight(new TreeNode(0, Byte.MIN_VALUE));</span>
+<span class="fc" id="L76">                decodeNode(node.getLeft(), headerReader);</span>
+<span class="fc" id="L77">                decodeNode(node.getRight(), headerReader);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">            } else if (type == LEAF) {</span>
+<span class="fc" id="L79">                final byte value = headerReader.getValue();</span>
+<span class="fc" id="L80">                node.setId(value);</span>
+<span class="fc" id="L81">            } else {</span>
+<span class="nc" id="L82">                throw new IllegalArgumentException(</span>
+                        &quot;Something went wrong traveling header.\n&quot; +
+                                &quot;expected 0 or 1, got: &quot; + type);
+            }
+        }
+<span class="fc" id="L87">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

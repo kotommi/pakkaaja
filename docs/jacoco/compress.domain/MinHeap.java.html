@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MinHeap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.domain</a> &gt; <span class="el_source">MinHeap.java</span></div><h1>MinHeap.java</h1><pre class="source lang-java linenums">package compress.domain;
+
+/**
+ * MinimumHeap implementation based on CLRS
+ */
+public class MinHeap {
+    private TreeNode[] heap;
+    private int size;
+
+    /**
+     * Create empty heap with size 256.
+     */
+<span class="fc" id="L13">    public MinHeap() {</span>
+        //1-indexing for simple index math
+<span class="fc" id="L15">        this.heap = new TreeNode[257];</span>
+<span class="fc" id="L16">        this.size = 0;</span>
+<span class="fc" id="L17">    }</span>
+
+    /**
+     * Adds all nodes to the heap.
+     *
+     * @param nodes Collection of treenodes to add
+     */
+    public void addAll(TreeNode... nodes) {
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        for (TreeNode t : nodes) {</span>
+<span class="fc" id="L26">            add(t);</span>
+        }
+<span class="fc" id="L28">    }</span>
+
+    /**
+     * Maintains the min-heap property.
+     *
+     * @param i index where to start
+     */
+    private void heapify(int i) {
+<span class="pc bpc" id="L36" title="1 of 4 branches missed.">        if (i &gt; size || i &lt; 1) {</span>
+<span class="fc" id="L37">            return;</span>
+        }
+<span class="fc" id="L39">        final int left = 2 * i;</span>
+<span class="fc" id="L40">        final int right = (2 * i) + 1;</span>
+<span class="fc" id="L41">        int smallest = i;</span>
+
+<span class="fc bfc" id="L43" title="All 4 branches covered.">        if ((left &lt;= size) &amp;&amp; (heap[left].getCount() &lt; heap[smallest].getCount())) {</span>
+<span class="fc" id="L44">            smallest = left;</span>
+        }
+<span class="fc bfc" id="L46" title="All 4 branches covered.">        if ((right &lt;= size) &amp;&amp; (heap[right].getCount() &lt; heap[smallest].getCount())) {</span>
+<span class="fc" id="L47">            smallest = right;</span>
+        }
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (smallest != i) {</span>
+<span class="fc" id="L51">            swap(i, smallest);</span>
+<span class="fc" id="L52">            heapify(smallest);</span>
+        }
+
+<span class="fc" id="L55">    }</span>
+
+
+    /**
+     * Swap two nodes in the array.
+     *
+     * @param i index
+     * @param j index
+     */
+    private void swap(int i, int j) {
+<span class="fc" id="L65">        final TreeNode temp = heap[i];</span>
+<span class="fc" id="L66">        heap[i] = heap[j];</span>
+<span class="fc" id="L67">        heap[j] = temp;</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Remove and return smallest element from heap.
+     *
+     * @return &quot;smallest&quot; node in heap, null if empty
+     */
+    public TreeNode poll() {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (size == 0) {</span>
+<span class="fc" id="L77">            return null;</span>
+        }
+<span class="fc" id="L79">        final TreeNode ret = heap[1];</span>
+<span class="fc" id="L80">        heap[1] = heap[size];</span>
+<span class="fc" id="L81">        size--;</span>
+<span class="fc" id="L82">        heapify(1);</span>
+<span class="fc" id="L83">        return ret;</span>
+    }
+
+    /**
+     * Adds a node to the heap and heapifies it to right position.
+     *
+     * @param node node to add
+     */
+    public void add(TreeNode node) {
+<span class="fc" id="L92">        size++;</span>
+<span class="fc" id="L93">        heap[size] = node;</span>
+<span class="fc" id="L94">        int i = size;</span>
+<span class="fc bfc" id="L95" title="All 4 branches covered.">        while (i &gt; 1 &amp;&amp; heap[parent(i)].getCount() &gt; heap[i].getCount()) {</span>
+<span class="fc" id="L96">            swap(parent(i), i);</span>
+<span class="fc" id="L97">            i = parent(i);</span>
+        }
+<span class="fc" id="L99">    }</span>
+
+
+    /**
+     * Get the parent's index for element at index i
+     *
+     * @param i index
+     * @return index of parent
+     */
+    private int parent(int i) {
+<span class="fc" id="L109">        return i / 2;</span>
+    }
+
+    /**
+     * Logical size of the heap.
+     *
+     * @return Amount of elements in the heap
+     */
+    public int size() {
+<span class="fc" id="L118">        return size;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L123">        String arr = &quot;&quot;;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        for (int i = 1; i &lt;= size; i++) {</span>
+<span class="nc" id="L125">            arr += heap[i].toString() + &quot; &quot;;</span>
+        }
+<span class="nc" id="L127">        return &quot;MinHeap{&quot; +</span>
+                &quot;heap=&quot; + arr +
+                &quot;, size=&quot; + size +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

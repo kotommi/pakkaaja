@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Codeword.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.domain</a> &gt; <span class="el_source">Codeword.java</span></div><h1>Codeword.java</h1><pre class="source lang-java linenums">package compress.domain;
+
+/**
+ * Class representing a Huffman codeword.
+ * Uses an int to represent a bitstring.
+ * The codewords are &lt;= 20 bits long so
+ * int32 is a good compromise between ease
+ * of use and size. Array of 3 bytes would be
+ * most optimal in size but the bitwise operations
+ * in Java return always ints so that implementation
+ * would suffer from casts between the primitives and
+ * it would use ints for the intermediate results.
+ */
+public class Codeword {
+
+    private int bits;
+    // logical size of the set
+    private int index;
+
+<span class="fc" id="L20">    public Codeword() {</span>
+<span class="fc" id="L21">        this.bits = 0;</span>
+<span class="fc" id="L22">        this.index = 0;</span>
+<span class="fc" id="L23">    }</span>
+
+<span class="fc" id="L25">    private Codeword(int bits, int index) {</span>
+<span class="fc" id="L26">        this.bits = bits;</span>
+<span class="fc" id="L27">        this.index = index;</span>
+<span class="fc" id="L28">    }</span>
+
+    /**
+     * Returns a bit value at position i.
+     *
+     * @param i index, range 0-31
+     * @return value of the bit
+     * @throws IndexOutOfBoundsException if i &gt; 31 or i &lt; 0.
+     *                                   The set only holds an int's worth of bits
+     */
+    public boolean get(int i) {
+<span class="pc bpc" id="L39" title="2 of 4 branches missed.">        if (i &gt; 31 || i &lt; 0) {</span>
+<span class="nc" id="L40">            throw new IndexOutOfBoundsException();</span>
+        }
+        //shift right i positions and &amp; the bit value
+<span class="fc" id="L43">        final int bit = bits &gt;&gt; i &amp; 1;</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        return bit == 1;</span>
+    }
+
+    /**
+     * Sets bit at position index to b.
+     *
+     * @param b bit value
+     * @throws IndexOutOfBoundsException if the internal int would overflow.
+     */
+    public void setNext(boolean b) {
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (index == 32) {</span>
+<span class="nc" id="L55">            throw new IndexOutOfBoundsException(&quot;int overflow&quot;);</span>
+        }
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (index &gt; 0)</span>
+<span class="fc" id="L58">            bits = bits &lt;&lt; 1;</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (b) {</span>
+<span class="fc" id="L60">            bits = bits | 1;</span>
+        }
+<span class="fc" id="L62">        index++;</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Returns how many bits are in use in the set.
+     *
+     * @return amount of bits used.
+     */
+    public int getIndex() {
+<span class="fc" id="L71">        return index;</span>
+    }
+
+    /**
+     * Returns a &quot;deep&quot; copy of this Codeword.
+     *
+     * @return Copy of this codeword
+     */
+    public Codeword getCopy() {
+<span class="fc" id="L80">        return new Codeword(this.bits, this.index);</span>
+    }
+
+    /**
+     * Too lazy to impl leading zeros.
+     *
+     * @return bits in a string
+     */
+    @Override
+    public String toString() {
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        return index == 0 ? &quot;&quot; : Integer.toBinaryString(bits);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

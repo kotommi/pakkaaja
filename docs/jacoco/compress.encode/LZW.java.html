@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LZW.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.encode</a> &gt; <span class="el_source">LZW.java</span></div><h1>LZW.java</h1><pre class="source lang-java linenums">package compress.encode;
+
+import compress.domain.ByteList;
+import compress.domain.TrieNode;
+
+<span class="nc" id="L6">public class LZW {</span>
+
+    private final static int MAX_CODES = 65536;
+
+    /**
+     * Compresses data with LZW, fixed-length 16-bit codes.
+     *
+     * @param inputBytes File content as bytes.
+     * @return Compressed data.
+     */
+    public static byte[] encode(byte[] inputBytes) {
+
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (inputBytes.length == 0) {</span>
+<span class="nc" id="L19">            return new byte[0];</span>
+        }
+
+<span class="fc" id="L22">        TrieNode dictionary = initEncodeDict();</span>
+<span class="fc" id="L23">        int nextCode = 256;</span>
+
+<span class="fc" id="L25">        final ByteList outputBytes = new ByteList(inputBytes.length / 2);</span>
+
+<span class="fc" id="L27">        ByteList current = new ByteList(3);</span>
+<span class="fc" id="L28">        current.add(inputBytes[0]);</span>
+
+
+        // main loop
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        for (int i = 1; i &lt; inputBytes.length; i++) {</span>
+
+<span class="fc" id="L34">            final byte next = inputBytes[i];</span>
+<span class="fc" id="L35">            current.add(next);</span>
+            // if in dict, try a longer string of bytes
+<span class="fc bfc" id="L37" title="All 2 branches covered.">            if (!dictionary.contains(current)) {</span>
+                // if not in  dict, add to dict and
+<span class="fc" id="L39">                dictionary.put(current, nextCode);</span>
+<span class="fc" id="L40">                nextCode++;</span>
+                // remove the last byte before writing
+<span class="fc" id="L42">                current.remove();</span>
+                // write the bytestring that was in dict
+<span class="fc" id="L44">                writeCodeword(dictionary.get(current), outputBytes);</span>
+                // start new string from the last byte that
+                // wasn't added.
+<span class="fc" id="L47">                final ByteList newlist = new ByteList(3);</span>
+<span class="fc" id="L48">                newlist.add(next);</span>
+<span class="fc" id="L49">                current = newlist;</span>
+                // reset dict if full
+<span class="fc bfc" id="L51" title="All 2 branches covered.">                if (nextCode == MAX_CODES) {</span>
+<span class="fc" id="L52">                    dictionary = initEncodeDict();</span>
+<span class="fc" id="L53">                    nextCode = 256;</span>
+                }
+            }
+        }
+        // write the last byte(s)
+<span class="fc" id="L58">        writeCodeword(dictionary.get(current), outputBytes);</span>
+
+<span class="fc" id="L60">        return outputBytes.toArray();</span>
+
+    }
+
+    /**
+     * Creates an initial dictionary for encoding.
+     * Contains all single byte-values.
+     *
+     * @return Initial dictionary for encoding.
+     */
+    private static TrieNode initEncodeDict() {
+<span class="fc" id="L71">        final TrieNode trieRoot = new TrieNode();</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (int i = 0; i &lt;= 255; i++) {</span>
+            // shift the int to byte range
+<span class="fc" id="L74">            byte[] b = {(byte) (i - 128)};</span>
+<span class="fc" id="L75">            trieRoot.put(new ByteList(b), i);</span>
+        }
+<span class="fc" id="L77">        return trieRoot;</span>
+    }
+
+    /**
+     * Writes codewords as 2 bytes to the end of the list.
+     * Supports 16-bit codes.
+     *
+     * @param code   Codeword to write.
+     * @param output List being written to.
+     */
+    private static void writeCodeword(int code, ByteList output) {
+<span class="fc" id="L88">        final byte first = (byte) ((code &gt;&gt; 8) &amp; 0xFF);</span>
+<span class="fc" id="L89">        final byte second = (byte) (code &amp; 0xFF);</span>
+<span class="fc" id="L90">        output.addAll(first, second);</span>
+<span class="fc" id="L91">    }</span>
+
+
+    /**
+     * Creates an initial dictionary for decoding.
+     * Contains all single byte-values.
+     *
+     * @return Initial dictionary for decoding.
+     */
+    private static ByteList[] initDecodeDict() {
+<span class="fc" id="L101">        final ByteList[] dictionary = new ByteList[MAX_CODES];</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        for (int i = 0; i &lt;= 255; i++) {</span>
+            // shift the int to byte range
+<span class="fc" id="L104">            final byte[] b = {(byte) (i - 128)};</span>
+<span class="fc" id="L105">            dictionary[i] = new ByteList(b);</span>
+        }
+<span class="fc" id="L107">        return dictionary;</span>
+    }
+
+
+    /**
+     * Converts encoded bytes to codewords.
+     * Supports fixed-length 16-bit codes.
+     *
+     * @param inputBytes compressed data.
+     * @return Array of codewords used in original order.
+     */
+    private static int[] bytesToCodes(byte[] inputBytes) {
+<span class="fc" id="L119">        final int[] codes = new int[inputBytes.length / 2];</span>
+<span class="fc" id="L120">        int j = 0;</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        for (int i = 0; i &lt; inputBytes.length - 1; i += 2) {</span>
+<span class="fc" id="L122">            final byte first = inputBytes[i];</span>
+<span class="fc" id="L123">            final byte second = inputBytes[i + 1];</span>
+<span class="fc" id="L124">            final int result = ((first &amp; 0xFF) &lt;&lt; 8) | (second &amp; 0xFF);</span>
+<span class="fc" id="L125">            codes[j] = result;</span>
+<span class="fc" id="L126">            j++;</span>
+        }
+<span class="fc" id="L128">        return codes;</span>
+    }
+
+    /**
+     * Decodes LZW-compressed data.
+     *
+     * @param inputBytes
+     * @return uncompressed bytes.
+     */
+    public static byte[] decode(byte[] inputBytes) {
+
+        // parse codewords used from the input
+<span class="fc" id="L140">        final int[] input = bytesToCodes(inputBytes);</span>
+
+        // create initial dictionary since
+        // we know what was used in encoding.
+<span class="fc" id="L144">        ByteList[] dictionary = initDecodeDict();</span>
+        // Keep track of the next code and
+        // when to reset dictionary.
+<span class="fc" id="L147">        int nextCode = 256;</span>
+
+<span class="fc" id="L149">        final ByteList output = new ByteList();</span>
+
+        // Handle first code by hand
+        // to init oldCode
+        // We know its always 1 byte
+
+<span class="fc" id="L155">        int oldCode = input[0];</span>
+<span class="fc" id="L156">        ByteList nextOutput = dictionary[oldCode];</span>
+<span class="fc" id="L157">        output.addAll(nextOutput);</span>
+
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        for (int i = 1; i &lt; input.length; i++) {</span>
+<span class="fc" id="L160">            int newCode = input[i];</span>
+
+            // if in dict all is good
+<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (dictionary[newCode] != null) {</span>
+<span class="fc" id="L164">                nextOutput = dictionary[newCode];</span>
+            } else {
+                // Codeword wasn't in dict so it must
+                // be old + old[0].
+<span class="fc" id="L168">                nextOutput = new ByteList();</span>
+<span class="fc" id="L169">                ByteList temp = dictionary[oldCode];</span>
+<span class="fc" id="L170">                nextOutput.addAll(temp);</span>
+<span class="fc" id="L171">                nextOutput.add(temp.get(0));</span>
+
+            }
+<span class="fc" id="L174">            output.addAll(nextOutput);</span>
+
+<span class="fc" id="L176">            final ByteList newDictEntry = new ByteList();</span>
+<span class="fc" id="L177">            newDictEntry.addAll(dictionary[oldCode]);</span>
+<span class="fc" id="L178">            newDictEntry.add(nextOutput.get(0));</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">            if (nextCode == MAX_CODES) {</span>
+<span class="fc" id="L180">                dictionary = initDecodeDict();</span>
+<span class="fc" id="L181">                nextCode = 256;</span>
+            }
+
+<span class="fc" id="L184">            dictionary[nextCode] = newDictEntry;</span>
+<span class="fc" id="L185">            nextCode++;</span>
+
+<span class="fc" id="L187">            oldCode = newCode;</span>
+        }
+<span class="fc" id="L189">        return output.toArray();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

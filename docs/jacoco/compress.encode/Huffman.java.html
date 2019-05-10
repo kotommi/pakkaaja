@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Huffman.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.encode</a> &gt; <span class="el_source">Huffman.java</span></div><h1>Huffman.java</h1><pre class="source lang-java linenums">package compress.encode;
+
+import compress.domain.ByteList;
+import compress.domain.Codeword;
+import compress.domain.MinHeap;
+import compress.domain.TreeNode;
+import compress.utils.ArrayUtils;
+
+<span class="nc" id="L9">public class Huffman {</span>
+
+    private static final int offset = 128;
+
+    /**
+     * Builds a Huffman-tree from orphan nodes.
+     *
+     * @param nodes array of lone TreeNodes
+     * @return A Huffman-tree where leaves are sorted by count.
+     */
+    public static TreeNode buildTree(TreeNode[] nodes) {
+<span class="fc" id="L20">        MinHeap heap = new MinHeap();</span>
+<span class="fc" id="L21">        heap.addAll(nodes);</span>
+
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        while (heap.size() &gt; 1) {</span>
+<span class="fc" id="L24">            TreeNode left = heap.poll();</span>
+<span class="fc" id="L25">            TreeNode right = heap.poll();</span>
+<span class="fc" id="L26">            TreeNode combined = combineNode(left, right);</span>
+<span class="fc" id="L27">            heap.add(combined);</span>
+<span class="fc" id="L28">        }</span>
+<span class="fc" id="L29">        return heap.poll();</span>
+    }
+
+    /**
+     * Builds TreeNodes from a frequency list.
+     *
+     * @param freqs count of occurences for each byte
+     * @return an array of TreeNodes
+     */
+    public static TreeNode[] buildNodes(int[] freqs) {
+<span class="fc" id="L39">        final int size = ArrayUtils.nonZeroes(freqs);</span>
+<span class="fc" id="L40">        final TreeNode[] treeNodes = new TreeNode[size];</span>
+<span class="fc" id="L41">        int j = 0;</span>
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (int i = 0; i &lt; freqs.length; i++) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            if (freqs[i] != 0) {</span>
+<span class="fc" id="L45">                treeNodes[j] = new TreeNode(freqs[i], (byte) (i + offset));</span>
+<span class="fc" id="L46">                j++;</span>
+            }
+        }
+<span class="fc" id="L49">        return treeNodes;</span>
+    }
+
+    /**
+     * Combines two nodes as one with sum count, and left and right as children.
+     *
+     * @param left  TreeNode with count &gt; right.count
+     * @param right TreeNode with count &lt; left.count
+     * @return A node with count.right + count.left and empty bytes since they aren't needed
+     */
+    private static TreeNode combineNode(TreeNode left, TreeNode right) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (left.getCount() &lt; right.getCount()) {</span>
+<span class="fc" id="L61">            final TreeNode temp = left;</span>
+<span class="fc" id="L62">            left = right;</span>
+<span class="fc" id="L63">            right = temp;</span>
+        }
+        // combine counts and use a dummy value
+<span class="fc" id="L66">        final TreeNode combined = new TreeNode(left.getCount() + right.getCount(), Byte.MIN_VALUE);</span>
+<span class="fc" id="L67">        combined.setLeft(left);</span>
+<span class="fc" id="L68">        combined.setRight(right);</span>
+<span class="fc" id="L69">        return combined;</span>
+    }
+
+    /**
+     * Recursive preorder-treewalk-method that mutates parameter table.
+     *
+     * @param node  TreeNode to process
+     * @param bits  Codeword representing the shortform version for a particular byte
+     * @param table lookup-table for Huffman codes
+     */
+    private static void preOrderTreeWalk(TreeNode node, Codeword bits, Codeword[] table) {
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (node == null) {</span>
+<span class="nc" id="L81">            return;</span>
+        }
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (node.isLeaf()) {</span>
+            //bits.reverse();
+<span class="fc" id="L85">            table[(int) node.getId() + offset] = bits;</span>
+<span class="fc" id="L86">            return;</span>
+        }
+        // could probably reuse original bits for one of these
+<span class="fc" id="L89">        final Codeword left = bits.getCopy();</span>
+<span class="fc" id="L90">        left.setNext(false);</span>
+<span class="fc" id="L91">        final Codeword right = bits.getCopy();</span>
+<span class="fc" id="L92">        right.setNext(true);</span>
+<span class="fc" id="L93">        preOrderTreeWalk(node.getLeft(), left, table);</span>
+<span class="fc" id="L94">        preOrderTreeWalk(node.getRight(), right, table);</span>
+<span class="fc" id="L95">    }</span>
+
+
+    /**
+     * Builds a lookup-table for Huffman codes.
+     *
+     * @param treeRoot root of a Huffman-tree
+     * @return array where arr[byte + 128] is the short code for that byte
+     */
+    public static Codeword[] buildLookupTable(TreeNode treeRoot) {
+<span class="fc" id="L105">        final int BYTEMAX = 256;</span>
+<span class="fc" id="L106">        Codeword[] table = new Codeword[BYTEMAX];</span>
+<span class="fc" id="L107">        preOrderTreeWalk(treeRoot, new Codeword(), table);</span>
+<span class="fc" id="L108">        return table;</span>
+    }
+
+
+    /**
+     * Decodes an array of bytes with a Huffman-tree
+     * into the originals. Expects bytes[0] to be in
+     * range 0-7 and to indicate the leftover bits in
+     * last byte.
+     *
+     * @param bytes    Huffman-encoded bytes
+     * @param treeRoot Huffmantree with codewords used for encoding
+     * @return Original file contents as array of bytes
+     */
+    public static byte[] decode(byte[] bytes, TreeNode treeRoot) {
+<span class="fc" id="L123">        ByteList decodedBytes = new ByteList();</span>
+
+        //int index = 0; // where to write in decoded array
+<span class="fc" id="L126">        TreeNode current = treeRoot;</span>
+        // start from bytes[1], end at second to last
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        for (int i = 1; i &lt; bytes.length - 1; i++) {</span>
+<span class="fc" id="L129">            int currentByte = bytes[i] + offset;</span>
+            // j = bit in byte
+            // read backwards
+<span class="fc bfc" id="L132" title="All 2 branches covered.">            for (int j = 7; j &gt;= 0; j--) {</span>
+                //shift right j times to get position
+                //and last bit with 1 to get real bit
+<span class="fc" id="L135">                int bit = (currentByte &gt;&gt; j) &amp; 1;</span>
+                // if 0 zero left else right
+<span class="fc bfc" id="L137" title="All 2 branches covered.">                current = (bit == 0) ? current.getLeft() : current.getRight();</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">                if (current.isLeaf()) {</span>
+                    // write to array and reset the node we're on
+<span class="fc" id="L140">                    decodedBytes.add(current.getId());</span>
+<span class="fc" id="L141">                    current = treeRoot;</span>
+                }
+            }
+        }
+        // handle the last byte
+<span class="fc" id="L146">        int last = bytes[bytes.length - 1] + offset;</span>
+<span class="fc" id="L147">        int used = bytes[0];</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        for (int j = used; j &gt; 0; j--) {</span>
+<span class="fc" id="L149">            int bit = (last &gt;&gt; j) &amp; 1;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">            current = bit == 0 ? current.getLeft() : current.getRight();</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">            if (current.isLeaf()) {</span>
+<span class="fc" id="L152">                decodedBytes.add(current.getId());</span>
+<span class="fc" id="L153">                current = treeRoot;</span>
+            }
+        }
+<span class="fc" id="L156">        return decodedBytes.toArray();</span>
+    }
+
+
+    public static byte[] encodeData(byte[] bytes, Codeword[] lookup) {
+<span class="fc" id="L161">        final ByteList encodedBytes = new ByteList();</span>
+<span class="fc" id="L162">        encodedBytes.add((byte) 0);</span>
+
+<span class="fc" id="L164">        int bitIndex = 0;</span>
+<span class="fc" id="L165">        int currentByte = 0;</span>
+
+
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (int i = 0; i &lt; bytes.length; i++) {</span>
+<span class="fc" id="L169">            Codeword codeword = lookup[bytes[i] + offset];</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            for (int j = codeword.getIndex() - 1; j &gt;= 0; j--) {</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">                if (bitIndex &lt; 8) {</span>
+<span class="fc" id="L172">                    boolean isTrue = codeword.get(j);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">                    if (isTrue) {</span>
+                        // if bit == 1 flip last bit
+<span class="fc" id="L175">                        currentByte = currentByte | 0b00000001;</span>
+                    }
+<span class="fc bfc" id="L177" title="All 2 branches covered.">                    if (bitIndex != 7) {</span>
+                        //if not last bit in byte shift left one pos
+<span class="fc" id="L179">                        currentByte = currentByte &lt;&lt; 1;</span>
+                    }
+<span class="fc" id="L181">                    bitIndex++;</span>
+<span class="fc" id="L182">                } else {</span>
+                    // byte &quot;full&quot;
+                    // get the last 8 bits out of n int
+<span class="fc" id="L185">                    encodedBytes.add((byte) ((currentByte + offset)));</span>
+<span class="fc" id="L186">                    currentByte = 0;</span>
+<span class="fc" id="L187">                    bitIndex = 0;</span>
+                    // do this byte again
+<span class="fc" id="L189">                    j++;</span>
+                }
+            }
+        }
+        // if all bits are used add a dummy byte in the end
+        // and write 0 in front.
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        if (bitIndex == 8) {</span>
+<span class="fc" id="L196">            encodedBytes.add((byte) ((currentByte + offset)));</span>
+<span class="fc" id="L197">            encodedBytes.add((byte) 0);</span>
+<span class="fc" id="L198">            encodedBytes.set(0, (byte) 0);</span>
+        } else {
+            //add the last byte
+<span class="fc" id="L201">            encodedBytes.add((byte) ((currentByte + offset)));</span>
+            //set the header byte to used bits in the last byte
+<span class="fc" id="L203">            encodedBytes.set(0, (byte) bitIndex);</span>
+        }
+<span class="fc" id="L205">        return encodedBytes.toArray();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

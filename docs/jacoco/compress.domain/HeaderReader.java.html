@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeaderReader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">compress</a> &gt; <a href="index.source.html" class="el_package">compress.domain</a> &gt; <span class="el_source">HeaderReader.java</span></div><h1>HeaderReader.java</h1><pre class="source lang-java linenums">package compress.domain;
+
+/**
+ * Java Scanner style reader-class for encoded headers.
+ * This is used to hide dirty state from the decoding functions.
+ */
+public class HeaderReader {
+    private final byte[] arr;
+    private int leaves;
+<span class="fc" id="L10">    private final int offset = 129;</span>
+    private int i;
+
+    /**
+     * arr[0] is the number of leaves in the huffman-tree
+     * as a signed byte, hence the offset.
+     *
+     * @param arr data bytes with header in front.
+     */
+<span class="fc" id="L19">    public HeaderReader(byte[] arr) {</span>
+<span class="fc" id="L20">        this.arr = arr;</span>
+<span class="fc" id="L21">        this.leaves = arr[0] + offset;</span>
+<span class="fc" id="L22">        this.i = 1;</span>
+<span class="fc" id="L23">    }</span>
+
+    /**
+     * Reads until all leaves are read.
+     * After that the header ends.
+     *
+     * @return true if there's still header to read.
+     */
+    public boolean hasNext() {
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        return leaves &gt; 0;</span>
+    }
+
+    /**
+     * Reads next byte and maybe reduces leafcount.
+     * Algorithm knows when to call this.
+     * These are used to infer the structure of the tree.
+     *
+     * @return 1 for leaf node, 0 for parent.
+     * @see compress.encode.HufHeader
+     */
+    public byte getType() {
+<span class="fc" id="L44">        final byte b = arr[i];</span>
+<span class="fc" id="L45">        i++;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (b == 1) {</span>
+<span class="fc" id="L47">            leaves--;</span>
+        }
+<span class="fc" id="L49">        return b;</span>
+    }
+
+    /**
+     * Reads next byte.
+     *
+     * @return Value of a leaf node.
+     * @see compress.encode.HufHeader
+     */
+    public byte getValue() {
+<span class="fc" id="L59">        final byte b = arr[i];</span>
+<span class="fc" id="L60">        i++;</span>
+
+<span class="fc" id="L62">        return b;</span>
+    }
+
+    /**
+     * Used after the header has been read
+     * to infer where data starts.
+     *
+     * @return Array index of first actual data byte.
+     */
+    public int getIndex() {
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (leaves &gt; 0) {</span>
+            //fail case
+<span class="nc" id="L74">            return -1;</span>
+        }
+<span class="fc" id="L76">        return i;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
