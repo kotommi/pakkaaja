@@ -2,8 +2,10 @@
 
 #### Käyttö
 ```
-compress: java -jar pakkaja.jar -c huf/lzw text.txt
-extract: java -jar pakkaaja.jar -x huf/lzw text.txt.huf/lzw
+Pakkaus (compress)
+java -jar pakkaja.jar -c huf/lzw text.txt
+Purkaminen (extract)
+java -jar pakkaaja.jar -x huf/lzw text.txt.huf/lzw
 ```
 Mahdollisesti puuttuvat suoritusoikeudet
 ```
@@ -19,6 +21,8 @@ java -jar pakkaaja.jar -x lzw teksti.lzw
 
 #### Projektin rakennus:
 ```
+git clone https://github.com/kotommi/pakkaaja.git
+cd pakkaaja
 ./gradlew build
 ```
 .jar-paketti löytyy kansiosta

@@ -3,9 +3,15 @@
 Yksikkötestit toteutettu junit:illa. 
 Ne löytyvät kansiosta [src/test/java/compress](https://github.com/kotommi/pakkaaja/tree/master/src/test/java/compress).
 Lisäksi tehty integraatiotestejä jotka tarkistavat että data pysyy häviöttömänä purku- ja pakkauskierroksen jälkeen.
-#### Vertailut
+### Vertailut
 
-Testimetodit:
+#### Yhteenveto
+Itse toteutetut algoritmit häviävät gzipille pakkaussuhteessa ja käytetyssä ajassa. 
+Varsinkin purkamisessa gzip on omaa luokkaansa.
+E.coli-tiedostossa näkee kuitenkin että myös omat algoritmit saavuttavat hyvän pakkaussuhteen kun syöte käyttää pientä aakkostoa.
+Omista toteutuksista Huffman on LZW:tä nopeampi, mutta sen pakkaussuhde on huonompi tavallisella tekstillä.
+
+#### Testimetodit
 Tiedostokoko on mitattu ```ls -la``` komentoa käyttöän ja se ilmoittaa tavujen määrän.
 Pakkausuhde on laskettu kaavalla pakattu koko/alkuperäinen koko ja ilmoitettu prosentteina alkuperäisestä.
 
@@ -42,7 +48,7 @@ Kaikki tiedostot ovat tekstiä. Lisäksi E.coli-tiedosto on hyvin toisteista pie
 
 ![ecoli](kuvat/ecoli.png)
 
-#### Suoritusnopeuden ja aikavaativuuden testaaminen
+### Suoritusnopeuden ja aikavaativuuden testaaminen
 Otin satunnaista dataa testin toteutuksessa komennolla ```dd if=/dev/urandom of="$i"mfile bs=1M count=$i``` ja mittasin aikaa time-ohjelmalla.
 Kuviin sovitettu kuvaaja on laskettu R:n lm-funktiolla joka tuottaa lineaarisen mallin.
 
