@@ -21,7 +21,7 @@ Ohjelman flow menee suurinpiirtein näin:
 5. kirjoita se uuteen tiedostoon
 
 #### Suorituskyky- ja O-analyysivertailu
-Ks. testaus.md
+Ks. [Testaus](./Testaus.md)
 
 #### Riippuvuudet/Ei itse toteutetut asiat
 Käytän ohjelmassa Googlen Guava-kirjastoa tiedostojen lukemiseen ja kirjoittamiseen. 
