@@ -8,7 +8,7 @@ Lisäksi tehty integraatiotestejä jotka tarkistavat että data pysyy häviött�
 #### Yhteenveto
 Itse toteutetut algoritmit häviävät gzipille pakkaussuhteessa ja käytetyssä ajassa. 
 Varsinkin purkamisessa gzip on omaa luokkaansa.
-E.coli-tiedostossa näkee kuitenkin että myös omat algoritmit saavuttavat hyvän pakkaussuhteen kun syöte käyttää pientä aakkostoa.
+E.coli-tiedostossa näkee kuitenkin että myös omat algoritmit saavuttavat hyvän pakkaussuhteen kun syöte käyttää pientä aakkostoa(Huffman) ja sisältää paljon toistoa (LZW).
 Omista toteutuksista Huffman on LZW:tä nopeampi, mutta sen pakkaussuhde on huonompi tavallisella tekstillä.
 
 #### Testimetodit
