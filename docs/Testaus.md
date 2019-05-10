@@ -39,6 +39,7 @@ Kaikki tiedostot ovat tekstiä. Lisäksi E.coli-tiedosto on hyvin toisteista pie
 
 ![world](kuvat/world.png)
 ![bible](kuvat/bible.png)
+
 ![ecoli](kuvat/ecoli.png)
 
 #### Suoritusnopeuden ja aikavaativuuden testaaminen
@@ -48,9 +49,7 @@ Kuviin sovitettu kuvaaja on laskettu R:n lm-funktiolla joka tuottaa lineaarisen 
 Datan perusteella lineaarinen O(n) aikavaativuus tiedostokoon suhteen näyttäisi toteutuneen.
 
 ![Huffman pakkaus](kuvat/huf_pak.png)
-
 ![LZW pakkaus](kuvat/lzw_pak.png)
 
 ![Huffman purkaminen](kuvat/huf_pur.png)
-
 ![LZW pakkaus](kuvat/lzw_pur.png)
