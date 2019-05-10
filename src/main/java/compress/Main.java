@@ -10,7 +10,8 @@ import java.io.IOException;
 public class Main {
 
     /**
-     * Main class for testing, for now, for ever.
+     * Main class that parses commandline arguments and
+     * chooses mode of operation based on those.
      *
      * @param args commandline arguments
      * @throws IOException errorhandling soon:tm:
@@ -19,12 +20,12 @@ public class Main {
 
         if (args.length == 0) {
             System.out.println("No arguments given");
-            System.out.println("Usage: -[c/x/h] [huf/lzw] filename");
+            System.out.println("Usage: -[c/x] [huf/lzw] filename");
             return;
         }
         final String mode = args[0];
         if (mode.charAt(0) != '-') {
-            throw new IllegalArgumentException("first argument must be mode [-c/-x/-h]");
+            throw new IllegalArgumentException("first argument must be mode [-c/-x]");
         }
 
         final String algo = args[1];
@@ -40,7 +41,7 @@ public class Main {
                 extractFile(fileBytes, filename, algo);
                 break;
             default:
-                System.out.println("Unsupported operation, try [-c/-x/-h]");
+                System.out.println("Unsupported operation, try [-c/-x]");
                 break;
         }
     }

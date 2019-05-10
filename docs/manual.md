@@ -7,16 +7,26 @@ java -jar pakkaja.jar -c huf/lzw text.txt
 Purkaminen (extract)
 java -jar pakkaaja.jar -x huf/lzw text.txt.huf/lzw
 ```
-Mahdollisesti puuttuvat suoritusoikeudet
+
+Ohjelmaa käytetään komentoriviltä. Olen testannut sitä vain 64-bittisellä Linuxilla.
+Vivullinen argumentti -c tai -x kertoo ohjelmalle pakataanko vaiko puretaan.
+Sen jälkeen valitaan algoritmi huf tai lzw.
+Ohjelma pakkaa melkein minkä tahansa tiedoston kunhan se mahtuu muistiin. 
+Ainakin yksi rajoitus on Javan:n arrayn maksimikoko eli 2 gigatavua. 
+
+
+
+
+Mahdollisesti puuttuvat suoritusoikeudet saa asetettua komennolla
 ```
 chmod u+x pakkaaja.jar
 ```
 Esimerkkejä: 
 ```
 java -jar pakkaaja.jar -c huf teksti.txt
-java -jar pakkaaja.jar -x huf teksti.huf
-java -jar pakkaaja.jar -c lzw teksti.txt
-java -jar pakkaaja.jar -x lzw teksti.lzw
+java -jar pakkaaja.jar -x huf teksti.txt.huf
+java -jar pakkaaja.jar -c lzw data.dat
+java -jar pakkaaja.jar -x lzw data.dat.lzw
 ```
 
 #### Projektin rakennus:
