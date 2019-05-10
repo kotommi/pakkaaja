@@ -1,11 +1,11 @@
 ## Toteutusdokumentti
 
 #### Huffman
-Ohjelma toteuttaa Huffman-koodauksen 
+Ohjelma toteuttaa Huffman-koodauksen joka muuntaa tavuja vaihtelevan pituisiksi bittijonoiksi.
 
 #### LZW
 Ohjelmassa on toteutettu 16-bitin koodisanoja käyttävä Lempel-Ziv-Welch algoritmi.
-Se ottaa syötteenä 8 bitin tavuja.
+Se ottaa syötteenä tavuja ja muuntaa niitä kahden tavun koodeiksi.
 
 ### Ohjelman rakenne
 Ohjelmassa on käytetty luokkia jakamaan koodia loogisiin kokonaisuuksiin.
