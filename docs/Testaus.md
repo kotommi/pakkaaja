@@ -27,4 +27,4 @@ Kaikki tiedostot ovat tekstiä. Lisäksi E.coli-tiedosto on hyvin toisteista pie
 
 #### Suoritusnopeuden ja aikavaativuuden testaaminen
 Otin satunnaista dataa testin toteutuksessa komennolla ```dd if=/dev/urandom of="$i"mfile bs=1M count=$i``` ja mittasin aikaa time-ohjelmalla. 
-![Huffman pakkaus]()
+![Huffman pakkaus](docs/kuvat/huf_pak.png)
