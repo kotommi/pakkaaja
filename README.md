@@ -4,7 +4,7 @@ Tiedoston pakkausta Javalla
 Toteutetut algoritmit: Huffman, LZW
 
 ## Suoritettava ohjelma
-[Release](https://github.com/kotommi/pakkaaja/releases/tag/release)
+[Releases](https://github.com/kotommi/pakkaaja/releases)
 
 ## Dokumentaatio
 [Määrittely](https://github.com/kotommi/pakkaaja/blob/master/docs/M%C3%A4%C3%A4rittely.md)
